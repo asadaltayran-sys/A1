@@ -18,63 +18,25 @@ Aspect ratio: **16:9** for all shots (matches the 1920×1080 Remotion canvas).
 
 ---
 
-## Shot 01 — Hero Approach (0–4s in video)
+## The Six Prompts
 
-> A contemporary desert-modern villa, two stacked rectangular volumes with a dramatic 3.5-meter cantilever on the western edge, approached along a low travertine path between agave plantings. The lower volume reads as a long horizontal bar of honed cream travertine; the upper volume floats above in board-formed charcoal concrete. Blackened-steel-framed full-height bronze glass reveals warm interior light beginning to glow against the dusk. Long shadows rake across the gravel forecourt.
->
-> [STYLE BLOCK] [MATERIAL ANCHORS] [SETTING ANCHORS]
->
-> --ar 16:9 --style raw
+**Shot 01 — Hero Approach (0–4s)**
+> A contemporary desert-modern villa, two stacked rectangular volumes with a dramatic 3.5-meter cantilever on the western edge, approached along a low travertine path between agave plantings. The lower volume reads as a long horizontal bar of honed cream travertine; the upper volume floats above in board-formed charcoal concrete. Blackened-steel-framed full-height bronze glass reveals warm interior light beginning to glow against the dusk. Long shadows rake across the gravel forecourt. [STYLE BLOCK] [MATERIAL ANCHORS] [SETTING ANCHORS] --ar 16:9 --style raw
 
----
+**Shot 02 — Pool & Cantilever (4–9s)**
+> Wide-angle exterior of a 25-meter linear infinity pool with dark-plaster finish reflecting the cantilevered upper volume of a modern villa. The pool's far edge dissolves into the desert horizon. Vertical thermally-modified oak screens cast striped shadows on the travertine deck. An outdoor fire pit glows in the foreground; the western mountains catch the last warm sun. The cantilever throws a deep shadow line across the pool deck. [STYLE BLOCK] [MATERIAL ANCHORS] [SETTING ANCHORS] --ar 16:9 --style raw
 
-## Shot 02 — Pool & Cantilever (4–9s)
+**Shot 03 — Interior Living + Sunken Pit (9–14s)**
+> Interior of an open-plan living space inside the same modern villa. A circular sunken conversation pit clad in cream linen, centered on a board-formed concrete fireplace with blackened-steel surround. Walnut ceiling soffits run continuously from interior to exterior soffit, visible through floor-to-ceiling bronze-tinted glass that has fully retracted. A travertine waterfall kitchen island sits in the background. Warm pendant lighting, brass fixtures, terracotta and deep-teal accent textiles. Dusk light pours in from the west. [STYLE BLOCK] [MATERIAL ANCHORS] --ar 16:9 --style raw
 
-> Wide-angle exterior of a 25-meter linear infinity pool with dark-plaster finish reflecting the cantilevered upper volume of a modern villa. The pool's far edge dissolves into the desert horizon. Vertical thermally-modified oak screens cast striped shadows on the travertine deck. An outdoor fire pit glows in the foreground; the western mountains catch the last warm sun. The cantilever throws a deep shadow line across the pool deck.
->
-> [STYLE BLOCK] [MATERIAL ANCHORS] [SETTING ANCHORS]
->
-> --ar 16:9 --style raw
+**Shot 04 — Courtyard with Olive Tree (14–18s)**
+> Internal courtyard of the same villa, open to the sky, with a single mature olive tree at center casting dappled shadow. Travertine paving in a large-format grid, with a narrow linear water channel. Board-formed charcoal concrete walls on three sides; floor-to-ceiling bronze glass on the fourth reveals the warmly-lit living space beyond. A single travertine bench. Late-afternoon sun catches the olive leaves; sky is deepening cobalt overhead. [STYLE BLOCK] [MATERIAL ANCHORS] --ar 16:9 --style raw
 
----
+**Shot 05 — Aerial Dusk (18–23s)**
+> Drone aerial shot of the same modern villa from 40 meters above, looking down at a 30-degree angle. The two stacked rectangular volumes are visible in plan: lower travertine bar, upper charcoal-concrete bar cantilevered west over the dark linear infinity pool. The internal courtyard with its single olive tree reads as a green square cut into the roof plan. The villa is set into a rocky desert hillside; landscape lighting is just beginning to glow. Mountains in the distance, sky transitioning from peach to deep blue. [STYLE BLOCK] [SETTING ANCHORS] --ar 16:9 --style raw
 
-## Shot 03 — Interior Living + Sunken Pit (9–14s)
-
-> Interior of an open-plan living space inside the same modern villa. A circular sunken conversation pit clad in cream linen, centered on a board-formed concrete fireplace with blackened-steel surround. Walnut ceiling soffits run continuously from interior to exterior soffit, visible through floor-to-ceiling bronze-tinted glass that has fully retracted. A travertine waterfall kitchen island sits in the background. Warm pendant lighting, brass fixtures, terracotta and deep-teal accent textiles. Dusk light pours in from the west.
->
-> [STYLE BLOCK] [MATERIAL ANCHORS]
->
-> --ar 16:9 --style raw
-
----
-
-## Shot 04 — Courtyard with Olive Tree (14–18s)
-
-> Internal courtyard of the same villa, open to the sky, with a single mature olive tree at center casting dappled shadow. Travertine paving in a large-format grid, with a narrow linear water channel. Board-formed charcoal concrete walls on three sides; floor-to-ceiling bronze glass on the fourth reveals the warmly-lit living space beyond. A single travertine bench. Late-afternoon sun catches the olive leaves; sky is deepening cobalt overhead.
->
-> [STYLE BLOCK] [MATERIAL ANCHORS]
->
-> --ar 16:9 --style raw
-
----
-
-## Shot 05 — Aerial Dusk (18–23s)
-
-> Drone aerial shot of the same modern villa from 40 meters above, looking down at a 30-degree angle. The two stacked rectangular volumes are visible in plan: lower travertine bar, upper charcoal-concrete bar cantilevered west over the dark linear infinity pool. The internal courtyard with its single olive tree reads as a green square cut into the roof plan. The villa is set into a rocky desert hillside; landscape lighting is just beginning to glow. Mountains in the distance, sky transitioning from peach to deep blue.
->
-> [STYLE BLOCK] [SETTING ANCHORS]
->
-> --ar 16:9 --style raw
-
----
-
-## Shot 06 — Night Reveal (23–28s)
-
-> The same modern villa at full night. Interior warm light pours through full-height bronze-tinted glass, washing the travertine deck. The infinity pool is lit from beneath, glowing teal. The cantilevered upper volume reads as a dark floating mass against a star-filled high-desert sky with Milky Way faintly visible. Landscape uplighting catches the olive trees and agaves. Vertical oak screens are backlit, casting long striped shadows. Subtle linear lighting at the recessed plinth makes the lower volume appear to float.
->
-> [STYLE BLOCK] [MATERIAL ANCHORS] [SETTING ANCHORS]
->
-> --ar 16:9 --style raw
+**Shot 06 — Night Reveal (23–28s)**
+> The same modern villa at full night. Interior warm light pours through full-height bronze-tinted glass, washing the travertine deck. The infinity pool is lit from beneath, glowing teal. The cantilevered upper volume reads as a dark floating mass against a star-filled high-desert sky with Milky Way faintly visible. Landscape uplighting catches the olive trees and agaves. Vertical oak screens are backlit, casting long striped shadows. Subtle linear lighting at the recessed plinth makes the lower volume appear to float. [STYLE BLOCK] [MATERIAL ANCHORS] [SETTING ANCHORS] --ar 16:9 --style raw
 
 ---
 
