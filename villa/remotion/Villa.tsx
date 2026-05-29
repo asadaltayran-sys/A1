@@ -24,8 +24,8 @@ type Shot = {
 };
 
 const SHOTS: Shot[] = [
-  { src: '01-hero-approach.svg',   durationSec: 4, zoomFrom: 1.00, zoomTo: 1.12, panX: [0, -40],  label: 'Approach' },
-  { src: '02-pool-cantilever.svg', durationSec: 5, zoomFrom: 1.08, zoomTo: 1.00, panX: [40, 0],   label: 'Pool & Cantilever' },
+  { src: '01-hero-approach.webp',  durationSec: 4, zoomFrom: 1.00, zoomTo: 1.12, panX: [0, -40],  label: 'Approach' },
+  { src: '02-pool-cantilever.webp',durationSec: 5, zoomFrom: 1.08, zoomTo: 1.00, panX: [40, 0],   label: 'Pool & Cantilever' },
   { src: '03-interior-pit.svg',    durationSec: 5, zoomFrom: 1.00, zoomTo: 1.10, panY: [20, -10], label: 'Living' },
   { src: '04-courtyard-olive.svg', durationSec: 4, zoomFrom: 1.10, zoomTo: 1.00, panY: [-15, 0],  label: 'Courtyard' },
   { src: '05-aerial-dusk.svg',     durationSec: 5, zoomFrom: 1.00, zoomTo: 1.15, panX: [0, 30],   label: 'Aerial Dusk' },
