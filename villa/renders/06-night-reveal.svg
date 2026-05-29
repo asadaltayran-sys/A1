@@ -1,70 +1,264 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
   <defs>
     <linearGradient id="sky06" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#050818"/>
+      <stop offset="0%" stop-color="#030518"/>
+      <stop offset="60%" stop-color="#0a1228"/>
       <stop offset="100%" stop-color="#1a1f3a"/>
     </linearGradient>
-    <radialGradient id="warmglow" cx="0.5" cy="0.5">
-      <stop offset="0%" stop-color="#ffb84d" stop-opacity="0.6"/>
+    <radialGradient id="milkyway" cx="0.5" cy="0.5">
+      <stop offset="0%" stop-color="#a89e9a" stop-opacity="0.18"/>
+      <stop offset="50%" stop-color="#5a5078" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#5a5078" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="upperVol06" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0908"/>
+      <stop offset="100%" stop-color="#1a1815"/>
+    </linearGradient>
+    <linearGradient id="lowerVol06" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a2520"/>
+      <stop offset="100%" stop-color="#1a1612"/>
+    </linearGradient>
+    <linearGradient id="interiorGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd166"/>
+      <stop offset="100%" stop-color="#ff8a3d"/>
+    </linearGradient>
+    <radialGradient id="poolUplight" cx="0.5" cy="0.4">
+      <stop offset="0%" stop-color="#6ae0e8" stop-opacity="0.95"/>
+      <stop offset="60%" stop-color="#2a8088" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0d1f24" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="warmSpill" cx="0.5" cy="0.5">
+      <stop offset="0%" stop-color="#ffb84d" stop-opacity="0.45"/>
       <stop offset="100%" stop-color="#ffb84d" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="poolglow" cx="0.5" cy="0.5">
-      <stop offset="0%" stop-color="#4ad8e0" stop-opacity="0.85"/>
-      <stop offset="100%" stop-color="#1f3a3d" stop-opacity="0.2"/>
-    </radialGradient>
+    <linearGradient id="deck06" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7a6a55"/>
+      <stop offset="100%" stop-color="#3a3028"/>
+    </linearGradient>
   </defs>
+
   <!-- night sky -->
-  <rect width="1920" height="800" fill="url(#sky06)"/>
-  <!-- stars -->
+  <rect width="1920" height="780" fill="url(#sky06)"/>
+
+  <!-- milky way band (diagonal, faint) -->
+  <g transform="rotate(-12, 960, 340)">
+    <ellipse cx="960" cy="340" rx="1100" ry="100" fill="url(#milkyway)"/>
+    <ellipse cx="960" cy="340" rx="900" ry="60" fill="#f5efe6" opacity="0.04"/>
+    <ellipse cx="960" cy="340" rx="700" ry="40" fill="#f5efe6" opacity="0.06"/>
+  </g>
+
+  <!-- dense star field (varied brightness) -->
   <g fill="#f5efe6">
-    <circle cx="120" cy="80" r="1.5"/>
-    <circle cx="280" cy="160" r="1"/>
-    <circle cx="440" cy="120" r="2"/>
-    <circle cx="640" cy="60" r="1.5"/>
-    <circle cx="800" cy="180" r="1"/>
-    <circle cx="980" cy="100" r="2.5"/>
-    <circle cx="1180" cy="60" r="1"/>
-    <circle cx="1360" cy="140" r="1.5"/>
-    <circle cx="1540" cy="80" r="2"/>
-    <circle cx="1720" cy="180" r="1"/>
-    <circle cx="1860" cy="120" r="1.5"/>
-    <circle cx="200" cy="300" r="1"/>
-    <circle cx="540" cy="380" r="1.5"/>
-    <circle cx="1320" cy="320" r="1"/>
-    <circle cx="1620" cy="380" r="2"/>
+    <circle cx="80" cy="60" r="1"/>
+    <circle cx="180" cy="120" r="1.5"/>
+    <circle cx="240" cy="40" r="1"/>
+    <circle cx="320" cy="180" r="2"/>
+    <circle cx="380" cy="80" r="1"/>
+    <circle cx="440" cy="160" r="1.5"/>
+    <circle cx="520" cy="100" r="1"/>
+    <circle cx="600" cy="60" r="2.5"/>
+    <circle cx="660" cy="140" r="1"/>
+    <circle cx="720" cy="200" r="1.5"/>
+    <circle cx="780" cy="80" r="1"/>
+    <circle cx="840" cy="160" r="2"/>
+    <circle cx="900" cy="40" r="1"/>
+    <circle cx="960" cy="120" r="1.5"/>
+    <circle cx="1020" cy="80" r="1"/>
+    <circle cx="1080" cy="180" r="2"/>
+    <circle cx="1140" cy="100" r="1.5"/>
+    <circle cx="1200" cy="60" r="1"/>
+    <circle cx="1260" cy="160" r="2"/>
+    <circle cx="1320" cy="40" r="1"/>
+    <circle cx="1380" cy="120" r="1.5"/>
+    <circle cx="1440" cy="200" r="1"/>
+    <circle cx="1500" cy="80" r="2.5"/>
+    <circle cx="1560" cy="160" r="1"/>
+    <circle cx="1620" cy="100" r="1.5"/>
+    <circle cx="1680" cy="60" r="1"/>
+    <circle cx="1740" cy="180" r="2"/>
+    <circle cx="1800" cy="120" r="1.5"/>
+    <circle cx="1860" cy="80" r="1"/>
   </g>
-  <!-- milky way band -->
-  <ellipse cx="960" cy="340" rx="900" ry="60" fill="#f5efe6" opacity="0.06"/>
-  <ellipse cx="960" cy="340" rx="700" ry="40" fill="#f5efe6" opacity="0.08"/>
-  <!-- mountains silhouette -->
-  <polygon points="0,720 500,580 950,680 1450,560 1920,640 1920,800 0,800" fill="#0a0d1a"/>
-  <!-- upper volume (dark mass against sky) -->
-  <rect x="320" y="500" width="900" height="180" fill="#0a0908"/>
-  <!-- lower volume with warm glow through glass -->
-  <rect x="440" y="680" width="1080" height="160" fill="#1a1612"/>
-  <rect x="500" y="700" width="980" height="120" fill="#ffb84d" opacity="0.55"/>
-  <!-- floating plinth glow -->
-  <rect x="440" y="836" width="1080" height="6" fill="#ffb84d" opacity="0.7"/>
-  <!-- pool glow -->
-  <ellipse cx="960" cy="900" rx="640" ry="40" fill="url(#poolglow)"/>
-  <rect x="320" y="880" width="1280" height="60" fill="#4ad8e0" opacity="0.3"/>
-  <!-- ambient warmth around villa -->
-  <ellipse cx="960" cy="780" rx="900" ry="200" fill="url(#warmglow)"/>
-  <!-- ground -->
-  <rect y="940" width="1920" height="140" fill="#0a0908"/>
-  <!-- oak screen backlit -->
-  <g fill="#ffb84d" opacity="0.7">
-    <rect x="80" y="730" width="6" height="180"/>
-    <rect x="105" y="730" width="6" height="180"/>
-    <rect x="130" y="730" width="6" height="180"/>
-    <rect x="155" y="730" width="6" height="180"/>
-    <rect x="1760" y="730" width="6" height="180"/>
-    <rect x="1785" y="730" width="6" height="180"/>
-    <rect x="1810" y="730" width="6" height="180"/>
-    <rect x="1835" y="730" width="6" height="180"/>
+  <g fill="#f5efe6" opacity="0.7">
+    <circle cx="140" cy="240" r="1"/>
+    <circle cx="280" cy="320" r="1.5"/>
+    <circle cx="420" cy="280" r="1"/>
+    <circle cx="560" cy="380" r="2"/>
+    <circle cx="700" cy="300" r="1"/>
+    <circle cx="820" cy="420" r="1.5"/>
+    <circle cx="980" cy="320" r="1"/>
+    <circle cx="1120" cy="400" r="2"/>
+    <circle cx="1260" cy="280" r="1"/>
+    <circle cx="1400" cy="360" r="1.5"/>
+    <circle cx="1540" cy="320" r="1"/>
+    <circle cx="1680" cy="400" r="2"/>
+    <circle cx="1820" cy="280" r="1"/>
   </g>
-  <!-- label -->
-  <text x="96" y="120" font-family="Inter, system-ui" font-size="18" letter-spacing="8" fill="#f5efe6" opacity="0.7">PLACEHOLDER · SHOT 06</text>
-  <text x="96" y="180" font-family="Inter, system-ui" font-size="56" font-weight="300" letter-spacing="2" fill="#f5efe6">Night Reveal</text>
-  <text x="96" y="220" font-family="Inter, system-ui" font-size="20" letter-spacing="2" fill="#f5efe6" opacity="0.55">Pool uplit · interior glow · stars</text>
+  <g fill="#f5efe6" opacity="0.5">
+    <circle cx="60" cy="440" r="1"/>
+    <circle cx="200" cy="520" r="1"/>
+    <circle cx="340" cy="480" r="1"/>
+    <circle cx="480" cy="560" r="1"/>
+    <circle cx="620" cy="500" r="1"/>
+    <circle cx="760" cy="580" r="1"/>
+    <circle cx="900" cy="520" r="1"/>
+    <circle cx="1040" cy="600" r="1"/>
+    <circle cx="1180" cy="500" r="1"/>
+    <circle cx="1320" cy="580" r="1"/>
+    <circle cx="1460" cy="520" r="1"/>
+    <circle cx="1600" cy="600" r="1"/>
+    <circle cx="1740" cy="500" r="1"/>
+    <circle cx="1880" cy="580" r="1"/>
+  </g>
+  <!-- one bright star with subtle glow -->
+  <g>
+    <circle cx="1100" cy="180" r="3" fill="#f5efe6"/>
+    <circle cx="1100" cy="180" r="10" fill="#f5efe6" opacity="0.15"/>
+  </g>
+
+  <!-- distant mountain silhouettes -->
+  <polygon points="0,700 240,580 500,660 760,540 1020,640 1280,520 1540,620 1820,560 1920,640 1920,780 0,780" fill="#050818"/>
+  <!-- nearer mountain layer -->
+  <polygon points="0,770 200,670 460,750 720,620 980,720 1240,610 1500,700 1760,650 1920,730 1920,800 0,800" fill="#0a0d1a"/>
+
+  <!-- upper volume: dark floating mass against sky -->
+  <rect x="240" y="500" width="980" height="220" fill="url(#upperVol06)"/>
+  <!-- upper volume subtle top edge (catching faint sky) -->
+  <rect x="240" y="500" width="980" height="2" fill="#3a3a50" opacity="0.6"/>
+  <!-- upper volume window strip (small, dim glow from bedroom) -->
+  <rect x="380" y="600" width="300" height="40" fill="#3a2818"/>
+  <rect x="385" y="605" width="290" height="30" fill="#c4944a" opacity="0.45"/>
+  <!-- vertical timber screen detail on upper volume -->
+  <g fill="#1a1208" opacity="0.6">
+    <rect x="900" y="540" width="6" height="160"/>
+    <rect x="918" y="540" width="6" height="160"/>
+    <rect x="936" y="540" width="6" height="160"/>
+    <rect x="954" y="540" width="6" height="160"/>
+    <rect x="972" y="540" width="6" height="160"/>
+    <rect x="990" y="540" width="6" height="160"/>
+  </g>
+  <!-- backlit warmth behind timber screen -->
+  <rect x="894" y="540" width="108" height="160" fill="#ffb84d" opacity="0.18"/>
+
+  <!-- lower volume: travertine with warm interior glow through full-height glass -->
+  <rect x="380" y="720" width="1180" height="180" fill="url(#lowerVol06)"/>
+  <!-- main glass strip (warm interior pouring out) -->
+  <rect x="440" y="740" width="1080" height="140" fill="url(#interiorGlow)" opacity="0.7"/>
+  <!-- subtle interior detail silhouettes through glass -->
+  <g fill="#1a0a05" opacity="0.5">
+    <rect x="600" y="800" width="40" height="80"/>
+    <rect x="780" y="790" width="60" height="90"/>
+    <rect x="1100" y="800" width="50" height="80"/>
+  </g>
+  <!-- steel mullions -->
+  <g fill="#0a0908">
+    <rect x="436" y="740" width="6" height="140"/>
+    <rect x="700" y="740" width="3" height="140"/>
+    <rect x="960" y="740" width="3" height="140"/>
+    <rect x="1220" y="740" width="3" height="140"/>
+    <rect x="1516" y="740" width="6" height="140"/>
+  </g>
+  <!-- lower volume top edge (warm glow underside of cantilever) -->
+  <rect x="240" y="720" width="980" height="6" fill="#ff8a3d" opacity="0.35"/>
+
+  <!-- recessed plinth lighting (makes lower volume float) -->
+  <rect x="380" y="898" width="1180" height="4" fill="#ffb84d" opacity="0.85"/>
+  <rect x="380" y="902" width="1180" height="12" fill="#ffb84d" opacity="0.4"/>
+
+  <!-- travertine deck (lit by spill from glass) -->
+  <rect y="900" width="1920" height="180" fill="url(#deck06)"/>
+  <!-- warm spill on deck from interior -->
+  <ellipse cx="980" cy="960" rx="900" ry="140" fill="url(#warmSpill)"/>
+  <!-- striped shadow from oak screens (left and right) -->
+  <g fill="#000" opacity="0.55">
+    <polygon points="60,920 70,920 90,1080 80,1080"/>
+    <polygon points="90,920 100,920 130,1080 120,1080"/>
+    <polygon points="120,920 130,920 170,1080 160,1080"/>
+    <polygon points="150,920 160,920 210,1080 200,1080"/>
+    <polygon points="180,920 190,920 250,1080 240,1080"/>
+    <polygon points="1730,920 1740,920 1700,1080 1690,1080"/>
+    <polygon points="1760,920 1770,920 1740,1080 1730,1080"/>
+    <polygon points="1790,920 1800,920 1780,1080 1770,1080"/>
+    <polygon points="1820,920 1830,920 1820,1080 1810,1080"/>
+    <polygon points="1850,920 1860,920 1860,1080 1850,1080"/>
+  </g>
+
+  <!-- vertical oak screens (left flank) - backlit -->
+  <g fill="#1a1208">
+    <rect x="60" y="780" width="6" height="180"/>
+    <rect x="80" y="780" width="6" height="180"/>
+    <rect x="100" y="780" width="6" height="180"/>
+    <rect x="120" y="780" width="6" height="180"/>
+    <rect x="140" y="780" width="6" height="180"/>
+    <rect x="160" y="780" width="6" height="180"/>
+    <rect x="180" y="780" width="6" height="180"/>
+    <rect x="200" y="780" width="6" height="180"/>
+  </g>
+  <rect x="54" y="780" width="160" height="180" fill="#ffb84d" opacity="0.22"/>
+  <!-- vertical oak screens (right flank) -->
+  <g fill="#1a1208">
+    <rect x="1720" y="780" width="6" height="180"/>
+    <rect x="1740" y="780" width="6" height="180"/>
+    <rect x="1760" y="780" width="6" height="180"/>
+    <rect x="1780" y="780" width="6" height="180"/>
+    <rect x="1800" y="780" width="6" height="180"/>
+    <rect x="1820" y="780" width="6" height="180"/>
+    <rect x="1840" y="780" width="6" height="180"/>
+    <rect x="1860" y="780" width="6" height="180"/>
+  </g>
+  <rect x="1714" y="780" width="160" height="180" fill="#ffb84d" opacity="0.22"/>
+
+  <!-- infinity pool, lit from beneath glowing teal -->
+  <rect x="380" y="960" width="1180" height="80" fill="#0d1f24"/>
+  <rect x="380" y="960" width="1180" height="6" fill="#6ae0e8" opacity="0.7"/>
+  <ellipse cx="970" cy="1000" rx="640" ry="44" fill="url(#poolUplight)"/>
+  <!-- pool light dots (in-pool fixtures) -->
+  <g fill="#6ae0e8" opacity="0.95">
+    <circle cx="500" cy="990" r="4"/>
+    <circle cx="720" cy="990" r="4"/>
+    <circle cx="970" cy="990" r="4"/>
+    <circle cx="1220" cy="990" r="4"/>
+    <circle cx="1440" cy="990" r="4"/>
+  </g>
+  <!-- pool reflection of warm interior -->
+  <rect x="440" y="966" width="1080" height="20" fill="#ffb84d" opacity="0.2"/>
+  <!-- pool reflection of stars -->
+  <g fill="#f5efe6" opacity="0.4">
+    <circle cx="600" cy="1020" r="0.8"/>
+    <circle cx="820" cy="1015" r="0.8"/>
+    <circle cx="1100" cy="1025" r="0.8"/>
+    <circle cx="1340" cy="1020" r="0.8"/>
+  </g>
+
+  <!-- landscape uplighting on olive trees / agaves -->
+  <g>
+    <circle cx="280" cy="900" r="4" fill="#ffd166" opacity="0.95"/>
+    <ellipse cx="280" cy="900" rx="60" ry="80" fill="#ffd166" opacity="0.18"/>
+    <!-- silhouette of small olive tree -->
+    <ellipse cx="280" cy="850" rx="50" ry="40" fill="#2a3a1a"/>
+    <rect x="276" y="870" width="8" height="40" fill="#1a1208"/>
+  </g>
+  <g>
+    <circle cx="1660" cy="900" r="4" fill="#ffd166" opacity="0.95"/>
+    <ellipse cx="1660" cy="900" rx="60" ry="80" fill="#ffd166" opacity="0.18"/>
+    <ellipse cx="1660" cy="850" rx="50" ry="40" fill="#2a3a1a"/>
+    <rect x="1656" y="870" width="8" height="40" fill="#1a1208"/>
+  </g>
+  <!-- agave silhouettes scattered -->
+  <g fill="#1a1208" opacity="0.85">
+    <polygon points="380,1050 388,1010 396,1050"/>
+    <polygon points="400,1055 410,1005 420,1055"/>
+    <polygon points="1540,1050 1548,1010 1556,1050"/>
+    <polygon points="1560,1055 1570,1005 1580,1055"/>
+  </g>
+
+  <!-- atmospheric warm halo around villa -->
+  <ellipse cx="960" cy="820" rx="980" ry="220" fill="#ff8a3d" opacity="0.07"/>
+
+  <!-- subtle vignette -->
+  <radialGradient id="vignette06" cx="0.5" cy="0.55" r="0.85">
+    <stop offset="55%" stop-color="#000" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#000" stop-opacity="0.55"/>
+  </radialGradient>
+  <rect width="1920" height="1080" fill="url(#vignette06)"/>
 </svg>
