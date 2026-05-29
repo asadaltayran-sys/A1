@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="wall03" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a4540"/>
+      <stop offset="100%" stop-color="#2a2520"/>
+    </linearGradient>
+    <radialGradient id="fire03" cx="0.5" cy="0.5">
+      <stop offset="0%" stop-color="#ffb84d"/>
+      <stop offset="60%" stop-color="#c4502a" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2a1810" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="floor03" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c4b596"/>
+      <stop offset="100%" stop-color="#8a7d65"/>
+    </linearGradient>
+  </defs>
+  <!-- walnut ceiling -->
+  <rect width="1920" height="180" fill="#3d2818"/>
+  <!-- ceiling slat shadows -->
+  <g fill="#000" opacity="0.3">
+    <rect x="0" y="40" width="1920" height="4"/>
+    <rect x="0" y="90" width="1920" height="4"/>
+    <rect x="0" y="140" width="1920" height="4"/>
+  </g>
+  <!-- back wall: board-formed concrete -->
+  <rect x="0" y="180" width="1920" height="600" fill="url(#wall03)"/>
+  <!-- concrete board lines -->
+  <g stroke="#1a1612" stroke-width="2" opacity="0.5">
+    <line x1="0" y1="280" x2="1920" y2="280"/>
+    <line x1="0" y1="400" x2="1920" y2="400"/>
+    <line x1="0" y1="520" x2="1920" y2="520"/>
+    <line x1="0" y1="640" x2="1920" y2="640"/>
+  </g>
+  <!-- glass opening right side, dusk beyond -->
+  <rect x="1380" y="180" width="540" height="600" fill="#c47443" opacity="0.5"/>
+  <rect x="1380" y="180" width="8" height="600" fill="#0a0908"/>
+  <!-- fireplace surround (blackened steel) -->
+  <rect x="800" y="400" width="320" height="380" fill="#1a1612"/>
+  <!-- fire -->
+  <ellipse cx="960" cy="640" rx="120" ry="80" fill="url(#fire03)"/>
+  <!-- travertine floor -->
+  <rect y="780" width="1920" height="300" fill="url(#floor03)"/>
+  <!-- sunken pit (oval) -->
+  <ellipse cx="960" cy="920" rx="380" ry="60" fill="#0a0908" opacity="0.4"/>
+  <ellipse cx="960" cy="910" rx="360" ry="50" fill="#e8dcc8"/>
+  <!-- pendant light glow -->
+  <circle cx="600" cy="120" r="40" fill="#ffd166" opacity="0.8"/>
+  <circle cx="1320" cy="120" r="40" fill="#ffd166" opacity="0.8"/>
+  <!-- label -->
+  <text x="96" y="320" font-family="Inter, system-ui" font-size="18" letter-spacing="8" fill="#f5efe6" opacity="0.6">PLACEHOLDER · SHOT 03</text>
+  <text x="96" y="380" font-family="Inter, system-ui" font-size="56" font-weight="300" letter-spacing="2" fill="#f5efe6">Living · Sunken Pit</text>
+  <text x="96" y="420" font-family="Inter, system-ui" font-size="20" letter-spacing="2" fill="#f5efe6" opacity="0.5">Concrete fireplace · walnut soffit</text>
+</svg>

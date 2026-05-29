@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="sky04" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2845"/>
+      <stop offset="100%" stop-color="#4a5878"/>
+    </linearGradient>
+    <linearGradient id="wall04" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a3530"/>
+      <stop offset="100%" stop-color="#252018"/>
+    </linearGradient>
+    <linearGradient id="floor04" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b8a685"/>
+      <stop offset="100%" stop-color="#7a6d55"/>
+    </linearGradient>
+    <radialGradient id="canopy" cx="0.5" cy="0.5">
+      <stop offset="0%" stop-color="#7a8a6a"/>
+      <stop offset="70%" stop-color="#4a5a3a"/>
+      <stop offset="100%" stop-color="#2a3a1a" stop-opacity="0.8"/>
+    </radialGradient>
+  </defs>
+  <!-- sky strip (looking up) -->
+  <rect width="1920" height="240" fill="url(#sky04)"/>
+  <!-- courtyard walls -->
+  <rect x="0" y="240" width="1920" height="600" fill="url(#wall04)"/>
+  <!-- board-formed concrete lines -->
+  <g stroke="#0a0908" stroke-width="1" opacity="0.5">
+    <line x1="0" y1="340" x2="1920" y2="340"/>
+    <line x1="0" y1="460" x2="1920" y2="460"/>
+    <line x1="0" y1="580" x2="1920" y2="580"/>
+    <line x1="0" y1="700" x2="1920" y2="700"/>
+  </g>
+  <!-- glass wall on right showing warm interior -->
+  <rect x="1500" y="240" width="420" height="600" fill="#c4944a" opacity="0.45"/>
+  <rect x="1500" y="240" width="6" height="600" fill="#0a0908"/>
+  <!-- travertine floor with grid -->
+  <rect y="840" width="1920" height="240" fill="url(#floor04)"/>
+  <g stroke="#5a4d3a" stroke-width="1" opacity="0.5">
+    <line x1="640" y1="840" x2="640" y2="1080"/>
+    <line x1="1280" y1="840" x2="1280" y2="1080"/>
+    <line x1="0" y1="960" x2="1920" y2="960"/>
+  </g>
+  <!-- water channel -->
+  <rect x="0" y="1010" width="1920" height="30" fill="#2a4045" opacity="0.8"/>
+  <!-- olive tree trunk -->
+  <rect x="940" y="640" width="40" height="280" fill="#3a2a18"/>
+  <rect x="935" y="700" width="14" height="180" fill="#2a1f10"/>
+  <!-- olive canopy -->
+  <ellipse cx="960" cy="540" rx="320" ry="200" fill="url(#canopy)"/>
+  <!-- dappled shadow on floor -->
+  <g fill="#000" opacity="0.3">
+    <ellipse cx="780" cy="970" rx="80" ry="20"/>
+    <ellipse cx="960" cy="990" rx="140" ry="22"/>
+    <ellipse cx="1180" cy="970" rx="90" ry="20"/>
+  </g>
+  <!-- travertine bench -->
+  <rect x="300" y="900" width="200" height="40" fill="#c4b596"/>
+  <!-- label -->
+  <text x="96" y="160" font-family="Inter, system-ui" font-size="18" letter-spacing="8" fill="#f5efe6" opacity="0.7">PLACEHOLDER · SHOT 04</text>
+  <text x="96" y="220" font-family="Inter, system-ui" font-size="56" font-weight="300" letter-spacing="2" fill="#f5efe6">Courtyard · Olive</text>
+</svg>

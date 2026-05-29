@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="sky01" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a1f3d"/>
+      <stop offset="50%" stop-color="#8c4a3a"/>
+      <stop offset="100%" stop-color="#e0a86b"/>
+    </linearGradient>
+    <linearGradient id="ground01" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6b4a2f"/>
+      <stop offset="100%" stop-color="#2a1810"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="780" fill="url(#sky01)"/>
+  <rect y="780" width="1920" height="300" fill="url(#ground01)"/>
+  <!-- mountain backdrop -->
+  <polygon points="0,650 380,440 720,580 1100,420 1500,560 1920,470 1920,780 0,780" fill="#3a2f3d" opacity="0.7"/>
+  <!-- lower travertine volume -->
+  <rect x="420" y="640" width="1080" height="160" fill="#d4c5a8" opacity="0.95"/>
+  <!-- upper concrete volume (cantilevered west) -->
+  <rect x="280" y="500" width="900" height="140" fill="#3d3935" opacity="0.95"/>
+  <!-- glass strip glowing -->
+  <rect x="560" y="680" width="780" height="80" fill="#f4a460" opacity="0.6"/>
+  <!-- agave silhouettes -->
+  <g fill="#1a1f15" opacity="0.85">
+    <polygon points="200,820 220,750 240,820"/>
+    <polygon points="220,830 245,740 270,830"/>
+    <polygon points="1680,810 1700,760 1720,810"/>
+  </g>
+  <!-- label -->
+  <text x="96" y="120" font-family="Inter, system-ui" font-size="18" letter-spacing="8" fill="#f5efe6" opacity="0.6">PLACEHOLDER · SHOT 01</text>
+  <text x="96" y="180" font-family="Inter, system-ui" font-size="56" font-weight="300" letter-spacing="2" fill="#f5efe6">Hero Approach</text>
+  <text x="96" y="220" font-family="Inter, system-ui" font-size="20" letter-spacing="2" fill="#f5efe6" opacity="0.5">Dusk · cantilever silhouette</text>
+</svg>

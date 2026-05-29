@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="sky02" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a3550"/>
+      <stop offset="40%" stop-color="#c47443"/>
+      <stop offset="100%" stop-color="#f0c068"/>
+    </linearGradient>
+    <linearGradient id="pool02" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f3a3d"/>
+      <stop offset="100%" stop-color="#0d1f24"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="560" fill="url(#sky02)"/>
+  <!-- mountains -->
+  <polygon points="0,520 500,380 900,470 1400,360 1920,440 1920,560 0,560" fill="#5a3a32" opacity="0.7"/>
+  <!-- distant horizon line -->
+  <rect x="0" y="555" width="1920" height="2" fill="#f0c068" opacity="0.6"/>
+  <!-- infinity pool -->
+  <rect x="0" y="560" width="1920" height="380" fill="url(#pool02)"/>
+  <!-- pool reflection of sky -->
+  <rect x="0" y="560" width="1920" height="120" fill="#c47443" opacity="0.18"/>
+  <!-- cantilever shadow on pool -->
+  <rect x="200" y="600" width="1200" height="100" fill="#000" opacity="0.35"/>
+  <!-- travertine deck foreground -->
+  <rect x="0" y="940" width="1920" height="140" fill="#a8967a"/>
+  <!-- oak screen vertical bars -->
+  <g fill="#3d2818" opacity="0.85">
+    <rect x="80" y="780" width="14" height="200"/>
+    <rect x="115" y="780" width="14" height="200"/>
+    <rect x="150" y="780" width="14" height="200"/>
+    <rect x="185" y="780" width="14" height="200"/>
+  </g>
+  <!-- fire pit glow -->
+  <circle cx="1500" cy="980" r="60" fill="#ff6b35" opacity="0.7"/>
+  <circle cx="1500" cy="980" r="30" fill="#ffd166" opacity="0.9"/>
+  <!-- label -->
+  <text x="96" y="120" font-family="Inter, system-ui" font-size="18" letter-spacing="8" fill="#f5efe6" opacity="0.6">PLACEHOLDER · SHOT 02</text>
+  <text x="96" y="180" font-family="Inter, system-ui" font-size="56" font-weight="300" letter-spacing="2" fill="#f5efe6">Pool &amp; Cantilever</text>
+  <text x="96" y="220" font-family="Inter, system-ui" font-size="20" letter-spacing="2" fill="#f5efe6" opacity="0.5">Infinity edge · oak screen shadows</text>
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="sky06" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#050818"/>
+      <stop offset="100%" stop-color="#1a1f3a"/>
+    </linearGradient>
+    <radialGradient id="warmglow" cx="0.5" cy="0.5">
+      <stop offset="0%" stop-color="#ffb84d" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#ffb84d" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="poolglow" cx="0.5" cy="0.5">
+      <stop offset="0%" stop-color="#4ad8e0" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#1f3a3d" stop-opacity="0.2"/>
+    </radialGradient>
+  </defs>
+  <!-- night sky -->
+  <rect width="1920" height="800" fill="url(#sky06)"/>
+  <!-- stars -->
+  <g fill="#f5efe6">
+    <circle cx="120" cy="80" r="1.5"/>
+    <circle cx="280" cy="160" r="1"/>
+    <circle cx="440" cy="120" r="2"/>
+    <circle cx="640" cy="60" r="1.5"/>
+    <circle cx="800" cy="180" r="1"/>
+    <circle cx="980" cy="100" r="2.5"/>
+    <circle cx="1180" cy="60" r="1"/>
+    <circle cx="1360" cy="140" r="1.5"/>
+    <circle cx="1540" cy="80" r="2"/>
+    <circle cx="1720" cy="180" r="1"/>
+    <circle cx="1860" cy="120" r="1.5"/>
+    <circle cx="200" cy="300" r="1"/>
+    <circle cx="540" cy="380" r="1.5"/>
+    <circle cx="1320" cy="320" r="1"/>
+    <circle cx="1620" cy="380" r="2"/>
+  </g>
+  <!-- milky way band -->
+  <ellipse cx="960" cy="340" rx="900" ry="60" fill="#f5efe6" opacity="0.06"/>
+  <ellipse cx="960" cy="340" rx="700" ry="40" fill="#f5efe6" opacity="0.08"/>
+  <!-- mountains silhouette -->
+  <polygon points="0,720 500,580 950,680 1450,560 1920,640 1920,800 0,800" fill="#0a0d1a"/>
+  <!-- upper volume (dark mass against sky) -->
+  <rect x="320" y="500" width="900" height="180" fill="#0a0908"/>
+  <!-- lower volume with warm glow through glass -->
+  <rect x="440" y="680" width="1080" height="160" fill="#1a1612"/>
+  <rect x="500" y="700" width="980" height="120" fill="#ffb84d" opacity="0.55"/>
+  <!-- floating plinth glow -->
+  <rect x="440" y="836" width="1080" height="6" fill="#ffb84d" opacity="0.7"/>
+  <!-- pool glow -->
+  <ellipse cx="960" cy="900" rx="640" ry="40" fill="url(#poolglow)"/>
+  <rect x="320" y="880" width="1280" height="60" fill="#4ad8e0" opacity="0.3"/>
+  <!-- ambient warmth around villa -->
+  <ellipse cx="960" cy="780" rx="900" ry="200" fill="url(#warmglow)"/>
+  <!-- ground -->
+  <rect y="940" width="1920" height="140" fill="#0a0908"/>
+  <!-- oak screen backlit -->
+  <g fill="#ffb84d" opacity="0.7">
+    <rect x="80" y="730" width="6" height="180"/>
+    <rect x="105" y="730" width="6" height="180"/>
+    <rect x="130" y="730" width="6" height="180"/>
+    <rect x="155" y="730" width="6" height="180"/>
+    <rect x="1760" y="730" width="6" height="180"/>
+    <rect x="1785" y="730" width="6" height="180"/>
+    <rect x="1810" y="730" width="6" height="180"/>
+    <rect x="1835" y="730" width="6" height="180"/>
+  </g>
+  <!-- label -->
+  <text x="96" y="120" font-family="Inter, system-ui" font-size="18" letter-spacing="8" fill="#f5efe6" opacity="0.7">PLACEHOLDER · SHOT 06</text>
+  <text x="96" y="180" font-family="Inter, system-ui" font-size="56" font-weight="300" letter-spacing="2" fill="#f5efe6">Night Reveal</text>
+  <text x="96" y="220" font-family="Inter, system-ui" font-size="20" letter-spacing="2" fill="#f5efe6" opacity="0.55">Pool uplit · interior glow · stars</text>
+</svg>

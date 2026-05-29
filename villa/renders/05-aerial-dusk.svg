@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="sky05" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f2845"/>
+      <stop offset="50%" stop-color="#6a4a55"/>
+      <stop offset="100%" stop-color="#e89868"/>
+    </linearGradient>
+    <linearGradient id="terrain05" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7a5a3a"/>
+      <stop offset="100%" stop-color="#3a2818"/>
+    </linearGradient>
+    <linearGradient id="pool05" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d1f24"/>
+      <stop offset="100%" stop-color="#1f3a3d"/>
+    </linearGradient>
+  </defs>
+  <!-- horizon -->
+  <rect width="1920" height="380" fill="url(#sky05)"/>
+  <!-- distant mountains -->
+  <polygon points="0,360 500,250 950,330 1450,230 1920,310 1920,380 0,380" fill="#3a2a3a" opacity="0.65"/>
+  <!-- terrain (top-down rocky desert) -->
+  <rect y="380" width="1920" height="700" fill="url(#terrain05)"/>
+  <!-- terrain texture (rock dots) -->
+  <g fill="#1a1208" opacity="0.4">
+    <circle cx="200" cy="500" r="8"/>
+    <circle cx="400" cy="600" r="12"/>
+    <circle cx="1600" cy="540" r="10"/>
+    <circle cx="1800" cy="700" r="14"/>
+    <circle cx="120" cy="780" r="9"/>
+    <circle cx="1700" cy="900" r="11"/>
+  </g>
+  <!-- villa lower volume (travertine, in plan) -->
+  <rect x="560" y="560" width="900" height="320" fill="#d4c5a8" stroke="#8a7d65" stroke-width="2"/>
+  <!-- villa upper volume (charcoal, cantilevered west) -->
+  <rect x="420" y="600" width="760" height="240" fill="#3d3935" stroke="#0a0908" stroke-width="2" opacity="0.92"/>
+  <!-- courtyard cut (with olive tree) -->
+  <rect x="850" y="640" width="200" height="200" fill="#1a2845"/>
+  <circle cx="950" cy="740" r="60" fill="#4a5a3a"/>
+  <circle cx="950" cy="740" r="30" fill="#2a3a1a"/>
+  <!-- infinity pool (linear, dark) -->
+  <rect x="180" y="700" width="320" height="80" fill="url(#pool05)"/>
+  <!-- landscape uplighting glow -->
+  <g fill="#ffd166" opacity="0.4">
+    <circle cx="600" cy="900" r="40"/>
+    <circle cx="1400" cy="900" r="40"/>
+    <circle cx="1000" cy="950" r="30"/>
+  </g>
+  <!-- label -->
+  <text x="96" y="120" font-family="Inter, system-ui" font-size="18" letter-spacing="8" fill="#f5efe6" opacity="0.7">PLACEHOLDER · SHOT 05</text>
+  <text x="96" y="180" font-family="Inter, system-ui" font-size="56" font-weight="300" letter-spacing="2" fill="#f5efe6">Aerial · Dusk</text>
+  <text x="96" y="220" font-family="Inter, system-ui" font-size="20" letter-spacing="2" fill="#f5efe6" opacity="0.55">Two volumes · courtyard cut · pool line</text>
+</svg>
