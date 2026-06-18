@@ -1,0 +1,1670 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Saudi Visits — Interactive Dashboard</title>
+<style>
+  /* =========================================================
+     THEME TOKENS
+     ========================================================= */
+  :root{
+    --bg-0:#0b0f14;
+    --bg-1:#0f1620;
+    --bg-2:#141d29;
+    --bg-3:#1c2735;
+    --line:#27374b;
+    --line-2:#324560;
+    --txt:#e7eef7;
+    --txt-dim:#9aa9bd;
+    --txt-mute:#6b7c93;
+    --brand:#00a86b;          /* Saudi green, brightened */
+    --brand-2:#13d18a;
+    --brand-deep:#006C35;     /* flag green */
+    --gold:#e6c478;
+    --gold-2:#c69a3a;
+    --accent:#5b8def;
+    --warn:#ffb454;
+    --danger:#ff6b6b;
+    --grad-a:#00a86b;
+    --grad-b:#5b8def;
+    --grad-c:#e6c478;
+    --shadow-lg: 0 18px 60px rgba(0,0,0,.5), 0 2px 6px rgba(0,0,0,.4);
+    --shadow-md: 0 6px 24px rgba(0,0,0,.35);
+    --r-sm:8px; --r-md:14px; --r-lg:20px; --r-xl:26px;
+    --t-fast: 160ms cubic-bezier(.2,.7,.2,1);
+    --t-med:  280ms cubic-bezier(.2,.7,.2,1);
+    --t-slow: 520ms cubic-bezier(.2,.7,.2,1);
+  }
+  html[data-theme="light"]{
+    --bg-0:#f4f7fb;
+    --bg-1:#ffffff;
+    --bg-2:#f7fafc;
+    --bg-3:#eef3fa;
+    --line:#dbe3ee;
+    --line-2:#c4d0e0;
+    --txt:#0c1722;
+    --txt-dim:#475569;
+    --txt-mute:#7a8ba2;
+    --brand:#0a8754;
+    --brand-2:#0bbf78;
+    --brand-deep:#006C35;
+    --gold:#b3892a;
+    --gold-2:#8d6a18;
+    --accent:#3563d6;
+    --shadow-lg: 0 18px 60px rgba(16,32,55,.10), 0 2px 6px rgba(16,32,55,.06);
+    --shadow-md: 0 6px 24px rgba(16,32,55,.08);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 700px at 85% -10%, rgba(0,168,107,.16), transparent 60%),
+      radial-gradient(900px 600px at -10% 110%, rgba(91,141,239,.14), transparent 60%),
+      var(--bg-0);
+    color:var(--txt);
+    font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Inter", Arial, sans-serif;
+    font-feature-settings: "ss01","cv11";
+    -webkit-font-smoothing:antialiased;
+  }
+  html[data-theme="light"] body{
+    background:
+      radial-gradient(1100px 700px at 90% -10%, rgba(0,168,107,.10), transparent 60%),
+      radial-gradient(900px 600px at -10% 110%, rgba(91,141,239,.08), transparent 60%),
+      var(--bg-0);
+  }
+
+  ::selection{background:rgba(0,168,107,.35);color:#fff}
+
+  /* =========================================================
+     LAYOUT
+     ========================================================= */
+  #app{
+    max-width:1440px;
+    margin:0 auto;
+    padding:22px 26px 80px;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  header.topbar{
+    display:flex; align-items:center; gap:18px;
+    padding: 14px 18px;
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-md);
+  }
+  .brand{
+    display:flex; align-items:center; gap:12px;
+  }
+  .brand .logo{
+    width:38px;height:38px;border-radius:12px;
+    background:
+      radial-gradient(120% 120% at 20% 10%, rgba(255,255,255,.25), transparent 50%),
+      linear-gradient(135deg, var(--brand) 0%, var(--brand-deep) 70%);
+    display:grid; place-items:center;
+    box-shadow: 0 4px 14px rgba(0,168,107,.45), inset 0 0 0 1px rgba(255,255,255,.08);
+  }
+  .brand .logo svg{width:22px;height:22px}
+  .brand .title{display:flex; flex-direction:column; line-height:1.1}
+  .brand .title b{font-weight:700; letter-spacing:.2px}
+  .brand .title small{color:var(--txt-mute); font-size:11.5px; letter-spacing:.6px; text-transform:uppercase}
+  .grow{flex:1}
+  .top-actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+
+  .seg{
+    display:inline-flex; align-items:center;
+    background: var(--bg-3); border:1px solid var(--line);
+    border-radius: 999px; padding:4px;
+    gap:2px;
+  }
+  .seg button{
+    border:0; background:transparent; color:var(--txt-dim);
+    padding:7px 12px; font:inherit; border-radius:999px; cursor:pointer;
+    transition: background var(--t-fast), color var(--t-fast), transform var(--t-fast);
+  }
+  .seg button:hover{ color:var(--txt) }
+  .seg button.on{
+    background: linear-gradient(180deg, var(--brand), var(--brand-deep));
+    color:#fff; box-shadow: 0 6px 18px rgba(0,168,107,.32);
+  }
+
+  .iconbtn{
+    width:36px;height:36px;border-radius:10px;
+    background:var(--bg-3); border:1px solid var(--line); color:var(--txt-dim);
+    display:grid;place-items:center; cursor:pointer;
+    transition: var(--t-fast);
+  }
+  .iconbtn:hover{ color:var(--txt); transform:translateY(-1px); border-color:var(--line-2)}
+  .iconbtn svg{width:18px;height:18px}
+
+  /* KPI ROW */
+  .kpi-row{
+    display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap:14px;
+  }
+  .kpi{
+    position:relative;
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    border:1px solid var(--line);
+    border-radius: var(--r-lg);
+    padding:16px 18px 14px;
+    overflow:hidden;
+    box-shadow: var(--shadow-md);
+    transition: transform var(--t-med), border-color var(--t-med);
+  }
+  .kpi:hover{ transform: translateY(-2px); border-color: var(--line-2) }
+  .kpi .label{
+    color:var(--txt-mute); font-size:11.5px; letter-spacing:.8px; text-transform:uppercase;
+    display:flex; align-items:center; gap:8px;
+  }
+  .kpi .value{
+    margin-top:6px; font-weight:700; font-size:28px; letter-spacing:-.3px;
+    display:flex; align-items:baseline; gap:6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi .value .unit{ color:var(--txt-mute); font-size:13px; font-weight:600 }
+  .kpi .delta{
+    margin-top:6px; font-size:12px; display:inline-flex; align-items:center; gap:6px;
+    color: var(--brand-2);
+  }
+  .kpi .delta.down{ color: var(--danger) }
+  .kpi .delta svg{width:12px;height:12px}
+  .kpi .spark{
+    position:absolute; right:14px; bottom:10px; width:96px; height:34px; opacity:.85
+  }
+  .kpi.kpi-accent::before{
+    content:""; position:absolute; inset:0;
+    background: radial-gradient(120px 60px at 90% 0%, rgba(230,196,120,.20), transparent 60%);
+    pointer-events:none;
+  }
+
+  /* CONTROLS */
+  .controls{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    border:1px solid var(--line);
+    border-radius: var(--r-lg);
+    padding: 12px 14px;
+    box-shadow: var(--shadow-md);
+  }
+  .ctrl-group{ display:flex; align-items:center; gap:10px }
+  .ctrl-label{ font-size:11px; letter-spacing:.6px; text-transform:uppercase; color:var(--txt-mute) }
+  .year-wrap{ display:flex; align-items:center; gap:12px; min-width:340px; flex:1 }
+  .year-now{
+    font-weight:700; font-size:18px; min-width:54px; text-align:center;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+  }
+  .year-slider{
+    flex:1; -webkit-appearance:none; appearance:none; height:6px;
+    background: linear-gradient(90deg, rgba(0,168,107,.55), rgba(230,196,120,.55));
+    border-radius:999px; outline:none;
+  }
+  .year-slider::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:18px;height:18px; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--brand) 60%, var(--brand-deep));
+    box-shadow: 0 4px 12px rgba(0,0,0,.35), 0 0 0 3px rgba(0,168,107,.25);
+    cursor:pointer; transition: transform var(--t-fast);
+  }
+  .year-slider::-webkit-slider-thumb:hover{ transform: scale(1.15) }
+  .play{
+    background: linear-gradient(180deg, var(--brand), var(--brand-deep));
+    color:#fff; border:0; border-radius:10px; padding:8px 12px;
+    cursor:pointer; display:inline-flex; align-items:center; gap:6px;
+    font: 600 12.5px/1 inherit; letter-spacing:.4px;
+    box-shadow: 0 6px 18px rgba(0,168,107,.30);
+  }
+  .play:hover{ filter:brightness(1.06) }
+  .play svg{width:12px;height:12px}
+
+  /* MAIN GRID */
+  .main-grid{
+    display:grid; gap:14px;
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  }
+  .card{
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    border:1px solid var(--line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-md);
+    padding:16px;
+  }
+  .card h3{
+    margin:0 0 12px; font-size:13px; letter-spacing:.7px;
+    text-transform:uppercase; color:var(--txt-mute); font-weight:700;
+    display:flex; align-items:center; gap:8px;
+  }
+  .card h3 .badge{
+    background: rgba(0,168,107,.14); color:var(--brand-2);
+    border:1px solid rgba(0,168,107,.32);
+    padding:2px 8px; border-radius:999px; font-size:10.5px; letter-spacing:.4px;
+  }
+
+  /* MAP */
+  .map-card{ position:relative; padding:14px 14px 18px }
+  .map-meta{
+    position:absolute; left:18px; top:14px; z-index:2; display:flex; gap:10px; align-items:center;
+  }
+  .map-meta .pill{
+    background: rgba(11,15,20,.55); backdrop-filter: blur(8px);
+    border:1px solid var(--line); padding:5px 10px; border-radius:999px;
+    font-size:11.5px; color:var(--txt-dim);
+  }
+  html[data-theme="light"] .map-meta .pill{ background: rgba(255,255,255,.7) }
+  .map-meta .pill b{ color:var(--gold) }
+
+  .legend{
+    position:absolute; right:16px; bottom:14px; z-index:2;
+    background: rgba(11,15,20,.55); backdrop-filter: blur(10px);
+    border:1px solid var(--line); border-radius: 12px; padding:10px 12px;
+    font-size:11px; color:var(--txt-dim); min-width:230px;
+  }
+  html[data-theme="light"] .legend{ background: rgba(255,255,255,.72) }
+  .legend .bar{
+    height:8px; border-radius:999px; margin:6px 0 4px;
+    background: linear-gradient(90deg,
+      hsl(160 60% 16%) 0%,
+      hsl(155 65% 28%) 25%,
+      hsl(135 60% 42%) 55%,
+      hsl(50 80% 55%) 85%,
+      hsl(36 90% 60%) 100%);
+  }
+  .legend .labels{ display:flex; justify-content:space-between; color:var(--txt-mute) }
+
+  svg#map{
+    width:100%; height:auto; display:block;
+    aspect-ratio: 1000/800;
+    filter: drop-shadow(0 12px 24px rgba(0,0,0,.35));
+  }
+  html[data-theme="light"] svg#map{ filter: drop-shadow(0 8px 18px rgba(16,32,55,.12)) }
+
+  .region{
+    cursor:pointer;
+    stroke: rgba(255,255,255,.18);
+    stroke-width: 1.2;
+    transition: fill var(--t-med), transform var(--t-med), stroke var(--t-fast), opacity var(--t-fast);
+    transform-box: fill-box;
+    transform-origin:center;
+  }
+  html[data-theme="light"] .region{ stroke: rgba(20,40,60,.20) }
+  .region:hover{ stroke:#fff; stroke-width:1.8; filter: brightness(1.1) }
+  .region.selected{ stroke: var(--gold); stroke-width:2.2 }
+  .region.dim{ opacity:.32 }
+
+  .label{
+    pointer-events:none;
+    fill: rgba(255,255,255,.92);
+    font: 600 11px ui-sans-serif, system-ui;
+    text-shadow: 0 1px 2px rgba(0,0,0,.6);
+    letter-spacing:.3px;
+  }
+  html[data-theme="light"] .label{ fill:#0c1722; text-shadow:0 1px 0 rgba(255,255,255,.6) }
+  .label .num{ fill: var(--gold); font-weight:700 }
+
+  .tooltip{
+    position:absolute; pointer-events:none; z-index:5;
+    background: rgba(11,15,20,.92);
+    border:1px solid var(--line-2); color:var(--txt);
+    padding:10px 12px; border-radius:12px; min-width:220px;
+    box-shadow: var(--shadow-lg);
+    opacity:0; transform: translate(-50%, calc(-100% - 12px)) scale(.96);
+    transition: opacity var(--t-fast), transform var(--t-fast);
+    font-size:12px;
+  }
+  html[data-theme="light"] .tooltip{ background: rgba(255,255,255,.98) }
+  .tooltip.show{ opacity:1; transform: translate(-50%, calc(-100% - 14px)) scale(1) }
+  .tooltip .ttl{
+    display:flex; align-items:center; gap:8px; font-weight:700; font-size:13px;
+    margin-bottom:6px;
+  }
+  .tooltip .ttl .dot{ width:9px;height:9px;border-radius:50% }
+  .tooltip .rows{ display:grid; grid-template-columns:auto auto; gap:3px 14px }
+  .tooltip .rows .k{ color:var(--txt-mute) }
+  .tooltip .rows .v{ font-variant-numeric: tabular-nums; text-align:right; color:var(--txt) }
+  .tooltip .hint{ margin-top:6px; font-size:10.5px; color:var(--txt-mute) }
+
+  /* RIGHT RAIL */
+  .rail{ display:flex; flex-direction:column; gap:14px }
+
+  /* Top regions ranking */
+  .rank-list{ display:flex; flex-direction:column; gap:8px }
+  .rank-row{
+    display:grid; grid-template-columns: 22px 1fr auto; gap:10px; align-items:center;
+    padding:8px 10px; border-radius:10px;
+    transition: background var(--t-fast);
+    cursor:pointer;
+  }
+  .rank-row:hover{ background: var(--bg-3) }
+  .rank-row .pos{
+    width:22px;height:22px; border-radius:7px;
+    background: var(--bg-3); color:var(--txt-mute);
+    display:grid; place-items:center; font-weight:700; font-size:11px;
+  }
+  .rank-row.top1 .pos{ background: linear-gradient(135deg, var(--gold), var(--gold-2)); color:#1a1206 }
+  .rank-row .nm{ font-weight:600; font-size:13px }
+  .rank-row .meta{ color:var(--txt-mute); font-size:11px }
+  .rank-row .val{
+    font-weight:700; font-variant-numeric: tabular-nums; font-size:13px; color: var(--gold)
+  }
+  .rank-row .bar-wrap{ grid-column: 2 / 4; height:6px; background:var(--bg-3); border-radius:999px; overflow:hidden; margin-top:6px }
+  .rank-row .bar{
+    height:100%; border-radius:999px;
+    background: linear-gradient(90deg, var(--brand) 0%, var(--gold) 100%);
+    width:0%; transition: width var(--t-slow);
+  }
+
+  /* Donut */
+  .donut-wrap{
+    display:grid; grid-template-columns: 160px 1fr; gap:14px; align-items:center;
+  }
+  .donut{ position:relative; width:160px; height:160px }
+  .donut .ctr{
+    position:absolute; inset:0; display:grid; place-items:center; text-align:center
+  }
+  .donut .ctr .v{ font-weight:800; font-size:22px; font-variant-numeric: tabular-nums }
+  .donut .ctr .l{ font-size:10.5px; color:var(--txt-mute); letter-spacing:.6px; text-transform:uppercase }
+  .donut-legend{ display:flex; flex-direction:column; gap:6px }
+  .donut-legend .row{
+    display:grid; grid-template-columns: 12px 1fr auto auto; gap:8px; align-items:center;
+    font-size:12px;
+  }
+  .donut-legend .row .sw{ width:10px;height:10px; border-radius:3px }
+  .donut-legend .row .pct{ color:var(--txt-mute); width:42px; text-align:right; font-variant-numeric: tabular-nums }
+  .donut-legend .row .vv{ font-weight:700; font-variant-numeric: tabular-nums; width:60px; text-align:right }
+
+  /* origin bars */
+  .origin{
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .origin .row{
+    display:grid; grid-template-columns: 26px 1fr auto; gap:10px; align-items:center;
+    font-size:12px;
+  }
+  .origin .flag{
+    width:22px;height:15px; border-radius:3px; overflow:hidden;
+    background:#222; display:grid; place-items:center; font-size:13px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+  }
+  .origin .nm{ color: var(--txt) }
+  .origin .vv{ font-weight:700; font-variant-numeric: tabular-nums; color: var(--gold) }
+  .origin .barbg{
+    grid-column: 1 / 4; height:5px; background:var(--bg-3); border-radius:999px; overflow:hidden;
+    margin-top:4px;
+  }
+  .origin .barbg > i{
+    display:block; height:100%;
+    background: linear-gradient(90deg, var(--accent), var(--brand-2));
+    width:0%; transition: width var(--t-slow);
+  }
+
+  /* BOTTOM ROW */
+  .bottom-grid{
+    display:grid; gap:14px;
+    grid-template-columns: 2fr 1fr;
+  }
+  .trend-card{ position:relative }
+  .trend-card svg{ width:100%; height:240px }
+  .trend-card .grid line{ stroke: var(--line); stroke-dasharray:3 4; }
+  .trend-card .axis text{ fill: var(--txt-mute); font: 10.5px ui-sans-serif }
+  .trend-line{ fill:none; stroke: var(--brand-2); stroke-width:2.5;
+    stroke-dasharray: 1200; stroke-dashoffset:1200;
+    animation: draw 1.4s cubic-bezier(.2,.7,.2,1) forwards;
+    filter: drop-shadow(0 6px 14px rgba(0,168,107,.35));
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0 } }
+  .trend-area{ fill: url(#grad-area); opacity:.85 }
+  .trend-dot{ fill: var(--gold); stroke:#000; stroke-width:1.5; cursor:pointer }
+  html[data-theme="light"] .trend-dot{ stroke:#fff }
+
+  .month-tip{
+    position:absolute; background: rgba(11,15,20,.92);
+    border:1px solid var(--line-2); padding:8px 10px; border-radius:10px;
+    pointer-events:none; opacity:0; transform: translate(-50%,-110%);
+    font-size:11.5px; transition: opacity var(--t-fast);
+  }
+  html[data-theme="light"] .month-tip{ background: rgba(255,255,255,.97) }
+  .month-tip.show{ opacity:1 }
+
+  /* DETAIL PANEL */
+  .detail{
+    position: fixed; top:0; right:0; height:100%; width: 420px; max-width:92vw;
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    border-left:1px solid var(--line);
+    box-shadow: -30px 0 80px rgba(0,0,0,.45);
+    transform: translateX(110%);
+    transition: transform var(--t-med);
+    z-index: 20; display:flex; flex-direction:column;
+  }
+  .detail.open{ transform: translateX(0) }
+  .detail header{
+    padding:18px 18px 12px; display:flex; align-items:center; gap:10px; border-bottom:1px solid var(--line);
+  }
+  .detail header .swatch{ width:14px;height:14px;border-radius:4px }
+  .detail header h2{ margin:0; font-size:18px; letter-spacing:.2px }
+  .detail header small{ color:var(--txt-mute); font-size:11.5px; display:block; margin-top:2px }
+  .detail .close{ margin-left:auto }
+  .detail .body{ padding:16px 18px; overflow:auto; display:flex; flex-direction:column; gap:14px }
+  .stat-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px }
+  .stat{ background:var(--bg-3); border:1px solid var(--line); border-radius:12px; padding:10px 12px }
+  .stat .l{ font-size:10.5px; color:var(--txt-mute); letter-spacing:.6px; text-transform:uppercase }
+  .stat .v{ font-weight:800; font-size:20px; font-variant-numeric: tabular-nums; margin-top:2px }
+  .stat .v .u{ color: var(--txt-mute); font-size:12px; margin-left:3px; font-weight:600 }
+
+  .mini-bars{ display:flex; flex-direction:column; gap:6px }
+  .mini-bars .r{
+    display:grid; grid-template-columns: 90px 1fr auto; gap:10px; align-items:center;
+    font-size:12px;
+  }
+  .mini-bars .r .barbg{ height:6px; background:var(--bg-3); border-radius:999px; overflow:hidden }
+  .mini-bars .r .barbg > i{ display:block; height:100%; background: linear-gradient(90deg, var(--brand), var(--gold)); border-radius:999px; width:0%; transition: width var(--t-slow) }
+  .mini-bars .r .vv{ color: var(--gold); font-weight:700; font-variant-numeric: tabular-nums }
+
+  /* COMPARE STRIP */
+  .compare{
+    display:flex; gap:10px; flex-wrap:wrap; padding:8px;
+    border:1px dashed var(--line-2); border-radius:14px;
+    background: var(--bg-3);
+    min-height: 56px; align-items:center;
+  }
+  .compare .hint{ color:var(--txt-mute); font-size:12px; padding:6px 10px }
+  .chip{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:6px 10px; background:var(--bg-1); border:1px solid var(--line); border-radius:999px;
+    font-size:12px;
+  }
+  .chip .sw{ width:10px;height:10px; border-radius:3px }
+  .chip button{
+    background:none;border:0;color:var(--txt-mute);cursor:pointer; padding:0 0 0 4px; font-size:14px;
+  }
+  .chip button:hover{ color:var(--danger) }
+
+  /* RESPONSIVE */
+  @media (max-width: 1080px){
+    .main-grid{ grid-template-columns: 1fr }
+    .kpi-row{ grid-template-columns: repeat(2, 1fr) }
+    .bottom-grid{ grid-template-columns: 1fr }
+  }
+  @media (max-width: 560px){
+    .kpi-row{ grid-template-columns: 1fr }
+    #app{ padding:14px }
+  }
+
+  /* utility */
+  .row{ display:flex; align-items:center; gap:10px }
+  .between{ justify-content:space-between }
+  .muted{ color:var(--txt-mute) }
+  .pulse{
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow: 0 0 0 0 rgba(0,168,107,.55) }
+    70%{ box-shadow: 0 0 0 16px rgba(0,168,107,0) }
+    100%{ box-shadow: 0 0 0 0 rgba(0,168,107,0) }
+  }
+
+  .footer-note{
+    margin-top:10px; color:var(--txt-mute); font-size:11px; text-align:center
+  }
+
+  /* select */
+  select{
+    background: var(--bg-3); color:var(--txt);
+    border:1px solid var(--line); border-radius:10px; padding:7px 10px;
+    font: inherit; font-size:12.5px; outline:none;
+    transition: border-color var(--t-fast);
+  }
+  select:focus{ border-color: var(--brand) }
+
+  /* skeleton shimmer */
+  .shimmer::after{
+    content:""; position:absolute; inset:0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.05), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 1.8s infinite;
+  }
+  @keyframes shimmer{ to{ transform: translateX(100%) } }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ============ HEADER ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <!-- Stylised palm + crossed swords -->
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 20V12" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <path d="M12 11c-2-3-5-3-7-2 2 1 4 3 4 5 1-1 2-2 3-3z" fill="#fff"/>
+          <path d="M12 11c2-3 5-3 7-2-2 1-4 3-4 5-1-1-2-2-3-3z" fill="#fff"/>
+          <path d="M5 21h14" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="title">
+        <b>Saudi Visits</b>
+        <small>Interactive tourism dashboard</small>
+      </div>
+    </div>
+    <div class="grow"></div>
+    <div class="top-actions">
+      <div class="seg" role="tablist" aria-label="Visitor type">
+        <button data-type="all" class="on">All</button>
+        <button data-type="international">International</button>
+        <button data-type="domestic">Domestic</button>
+      </div>
+
+      <select id="purpose">
+        <option value="all">All purposes</option>
+        <option value="religious">Religious</option>
+        <option value="leisure">Leisure</option>
+        <option value="business">Business</option>
+        <option value="vfr">Friends &amp; Family</option>
+      </select>
+
+      <button class="iconbtn" id="theme-toggle" title="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+        </svg>
+      </button>
+      <button class="iconbtn" id="reset-btn" title="Reset filters">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ KPI ROW ============ -->
+  <section class="kpi-row" id="kpis">
+    <div class="kpi">
+      <div class="label">Total visits
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v5l3 2"/></svg>
+      </div>
+      <div class="value"><span class="num" data-k="total">0</span><span class="unit">M visits</span></div>
+      <div class="delta" data-k="totalDelta"></div>
+      <svg class="spark" viewBox="0 0 96 34" preserveAspectRatio="none" data-k="sparkTotal"></svg>
+    </div>
+    <div class="kpi">
+      <div class="label">International</div>
+      <div class="value"><span class="num" data-k="intl">0</span><span class="unit">M</span></div>
+      <div class="delta" data-k="intlDelta"></div>
+      <svg class="spark" viewBox="0 0 96 34" preserveAspectRatio="none" data-k="sparkIntl"></svg>
+    </div>
+    <div class="kpi">
+      <div class="label">Domestic</div>
+      <div class="value"><span class="num" data-k="dom">0</span><span class="unit">M</span></div>
+      <div class="delta" data-k="domDelta"></div>
+      <svg class="spark" viewBox="0 0 96 34" preserveAspectRatio="none" data-k="sparkDom"></svg>
+    </div>
+    <div class="kpi kpi-accent">
+      <div class="label">Tourism revenue</div>
+      <div class="value"><span class="num" data-k="rev">0</span><span class="unit">B SAR</span></div>
+      <div class="delta" data-k="revDelta"></div>
+      <svg class="spark" viewBox="0 0 96 34" preserveAspectRatio="none" data-k="sparkRev"></svg>
+    </div>
+    <div class="kpi">
+      <div class="label">Avg stay</div>
+      <div class="value"><span class="num" data-k="stay">0</span><span class="unit">nights</span></div>
+      <div class="delta" data-k="stayDelta"></div>
+      <svg class="spark" viewBox="0 0 96 34" preserveAspectRatio="none" data-k="sparkStay"></svg>
+    </div>
+  </section>
+
+  <!-- ============ CONTROLS ============ -->
+  <section class="controls">
+    <div class="ctrl-group year-wrap">
+      <span class="ctrl-label">Year</span>
+      <input id="year" class="year-slider" type="range" min="2020" max="2025" step="1" value="2024" />
+      <span class="year-now" id="year-now">2024</span>
+      <button class="play" id="play-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <span>Play</span>
+      </button>
+    </div>
+
+    <div class="ctrl-group">
+      <span class="ctrl-label">Compare</span>
+      <div class="compare" id="compare">
+        <span class="hint">Click 2 or more regions to compare…</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MAIN GRID ============ -->
+  <section class="main-grid">
+    <div class="card map-card">
+      <div class="map-meta">
+        <span class="pill">Showing <b id="meta-year">2024</b></span>
+        <span class="pill" id="meta-type">All visitors</span>
+        <span class="pill" id="meta-purpose">All purposes</span>
+      </div>
+
+      <svg id="map" viewBox="0 0 1000 800" aria-label="Map of Saudi Arabia"></svg>
+
+      <div class="legend">
+        <div class="row between">
+          <span>Visits intensity</span>
+          <span class="muted">choropleth</span>
+        </div>
+        <div class="bar"></div>
+        <div class="labels"><span>Low</span><span>Med</span><span>High</span></div>
+      </div>
+
+      <div id="tooltip" class="tooltip" role="tooltip"></div>
+    </div>
+
+    <div class="rail">
+      <div class="card">
+        <h3>Top regions <span class="badge" id="rank-count">13 regions</span></h3>
+        <div class="rank-list" id="rank-list"></div>
+      </div>
+
+      <div class="card">
+        <h3>Purpose of travel</h3>
+        <div class="donut-wrap">
+          <div class="donut">
+            <svg id="donut" viewBox="0 0 120 120"></svg>
+            <div class="ctr"><div>
+              <div class="v" id="donut-center">0</div>
+              <div class="l">visits</div>
+            </div></div>
+          </div>
+          <div class="donut-legend" id="donut-legend"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Top source countries</h3>
+        <div class="origin" id="origin"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BOTTOM ============ -->
+  <section class="bottom-grid">
+    <div class="card trend-card">
+      <h3>Monthly trend <span class="badge">selected year</span></h3>
+      <svg id="trend" viewBox="0 0 760 240" preserveAspectRatio="none"></svg>
+      <div id="month-tip" class="month-tip"></div>
+    </div>
+
+    <div class="card">
+      <h3>Region mix this year</h3>
+      <div id="mix-list" class="mini-bars"></div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    Illustrative dataset · Based on Vision 2030 tourism targets and recent Ministry of Tourism trends · Built by Claude
+  </div>
+</div>
+
+<!-- DETAIL PANEL -->
+<aside class="detail" id="detail" aria-hidden="true">
+  <header>
+    <span class="swatch" id="d-swatch"></span>
+    <div>
+      <h2 id="d-name">—</h2>
+      <small id="d-cap">—</small>
+    </div>
+    <button class="iconbtn close" id="d-close" title="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </header>
+  <div class="body">
+    <div class="stat-grid">
+      <div class="stat"><div class="l">Total visits</div><div class="v"><span id="d-total">0</span><span class="u">M</span></div></div>
+      <div class="stat"><div class="l">International</div><div class="v"><span id="d-intl">0</span><span class="u">M</span></div></div>
+      <div class="stat"><div class="l">Domestic</div><div class="v"><span id="d-dom">0</span><span class="u">M</span></div></div>
+      <div class="stat"><div class="l">Revenue</div><div class="v"><span id="d-rev">0</span><span class="u">B SAR</span></div></div>
+      <div class="stat"><div class="l">Avg stay</div><div class="v"><span id="d-stay">0</span><span class="u">n</span></div></div>
+      <div class="stat"><div class="l">Rank</div><div class="v"><span id="d-rank">—</span></div></div>
+    </div>
+
+    <div>
+      <h3 style="margin:6px 0 8px;color:var(--txt-mute);font-size:11px;letter-spacing:.7px;text-transform:uppercase;">Purpose split</h3>
+      <div id="d-purposes" class="mini-bars"></div>
+    </div>
+
+    <div>
+      <h3 style="margin:6px 0 8px;color:var(--txt-mute);font-size:11px;letter-spacing:.7px;text-transform:uppercase;">5-year trajectory</h3>
+      <svg id="d-traj" viewBox="0 0 380 120" style="width:100%;height:120px"></svg>
+    </div>
+
+    <div>
+      <h3 style="margin:6px 0 8px;color:var(--txt-mute);font-size:11px;letter-spacing:.7px;text-transform:uppercase;">Signature attractions</h3>
+      <div id="d-attractions" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+    </div>
+  </div>
+</aside>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const REGIONS = [
+  { id:"makkah",   name:"Makkah",            capital:"Makkah",     curve:"religious", color:"#0a8754",
+    path:"M 80 410 L 220 470 L 340 450 L 390 510 L 405 600 L 330 640 L 220 660 L 130 580 L 80 480 Z",
+    label:[230,560], dom2024:19.5, intl2024:13.0, revenue2024:92, stay2024:4.6,
+    purposes:{religious:.78,leisure:.10,business:.05,vfr:.07},
+    attractions:["Masjid al-Haram","Mina","Jeddah Corniche","Taif highlands"]
+  },
+  { id:"riyadh",   name:"Riyadh",            capital:"Riyadh",     curve:"business",  color:"#5b8def",
+    path:"M 470 360 L 540 440 L 620 390 L 720 440 L 740 580 L 640 660 L 470 640 L 410 560 L 410 460 Z",
+    label:[570,520], dom2024:20.1, intl2024:6.7, revenue2024:78, stay2024:2.7,
+    purposes:{business:.42,leisure:.25,vfr:.25,religious:.08},
+    attractions:["Diriyah","Boulevard World","Kingdom Centre","Edge of the World"]
+  },
+  { id:"madinah",  name:"Madinah",           capital:"Madinah",    curve:"religious", color:"#0bbf78",
+    path:"M 100 300 L 200 330 L 290 250 L 330 320 L 365 410 L 330 460 L 220 470 L 80 410 Z",
+    label:[220,370], dom2024:12.5, intl2024:6.7, revenue2024:46, stay2024:3.9,
+    purposes:{religious:.72,leisure:.14,vfr:.10,business:.04},
+    attractions:["Masjid an-Nabawi","Quba Mosque","AlUla","Hegra (Madā'in Sāliḥ)"]
+  },
+  { id:"eastern",  name:"Eastern Province",  capital:"Dammam",     curve:"business",  color:"#ffb454",
+    path:"M 450 200 L 580 220 L 740 180 L 920 200 L 960 410 L 870 580 L 740 680 L 740 580 L 720 440 L 620 390 L 590 290 L 510 290 Z",
+    label:[770,420], dom2024:10.1, intl2024:3.4, revenue2024:39, stay2024:2.3,
+    purposes:{business:.48,leisure:.22,vfr:.24,religious:.06},
+    attractions:["Dhahran","Half Moon Bay","King Fahd Causeway","Al Ahsa Oasis"]
+  },
+  { id:"asir",     name:"Asir",              capital:"Abha",       curve:"leisure",   color:"#e6c478",
+    path:"M 220 660 L 330 640 L 380 670 L 430 700 L 425 770 L 320 780 L 240 740 L 210 690 Z",
+    label:[320,720], dom2024:6.5, intl2024:1.9, revenue2024:21, stay2024:3.4,
+    purposes:{leisure:.62,vfr:.22,business:.10,religious:.06},
+    attractions:["Soudah peak","Habala village","Rijal Almaa","Abha Lake"]
+  },
+  { id:"tabuk",    name:"Tabuk",             capital:"Tabuk",      curve:"leisure",   color:"#13d18a",
+    path:"M 80 100 L 290 90 L 320 200 L 280 280 L 200 340 L 100 320 L 60 220 Z",
+    label:[190,210], dom2024:4.2, intl2024:2.5, revenue2024:24, stay2024:3.9,
+    purposes:{leisure:.66,business:.16,vfr:.12,religious:.06},
+    attractions:["NEOM","The Line","Magna Cove","Tabuk Castle"]
+  },
+  { id:"qassim",   name:"Al-Qassim",         capital:"Buraidah",   curve:"business",  color:"#5b8def",
+    path:"M 460 360 L 510 290 L 590 290 L 620 390 L 540 440 Z",
+    label:[535,360], dom2024:2.5, intl2024:0.7, revenue2024:8, stay2024:2.1,
+    purposes:{business:.38,vfr:.32,leisure:.22,religious:.08},
+    attractions:["Buraidah Dates Festival","Camel market","Onaizah heritage"]
+  },
+  { id:"hail",     name:"Hail",              capital:"Hail",       curve:"leisure",   color:"#9b7be3",
+    path:"M 320 200 L 350 230 L 440 200 L 510 290 L 460 360 L 360 380 L 320 290 Z",
+    label:[395,295], dom2024:1.6, intl2024:0.5, revenue2024:6, stay2024:2.4,
+    purposes:{leisure:.42,business:.24,vfr:.24,religious:.10},
+    attractions:["Aja & Salma mountains","Jubbah rock art","Hail historic centre"]
+  },
+  { id:"jouf",     name:"Al-Jouf",           capital:"Sakaka",     curve:"leisure",   color:"#b074d6",
+    path:"M 290 90 L 420 85 L 450 200 L 350 230 L 320 200 Z",
+    label:[370,160], dom2024:1.0, intl2024:0.3, revenue2024:4, stay2024:2.0,
+    purposes:{leisure:.40,business:.26,vfr:.26,religious:.08},
+    attractions:["Domat Al-Jandal","Marid Castle","Olive plantations"]
+  },
+  { id:"northern", name:"Northern Borders",  capital:"Arar",       curve:"business",  color:"#7aa6d7",
+    path:"M 420 85 L 700 60 L 740 180 L 580 220 L 450 200 Z",
+    label:[570,140], dom2024:0.7, intl2024:0.2, revenue2024:3, stay2024:1.8,
+    purposes:{business:.40,vfr:.34,leisure:.18,religious:.08},
+    attractions:["Arar markets","Rafha desert","Cross-border trade routes"]
+  },
+  { id:"baha",     name:"Al-Baha",           capital:"Al-Baha",    curve:"leisure",   color:"#0a8754",
+    path:"M 330 640 L 405 600 L 425 645 L 380 670 L 330 660 Z",
+    label:[370,635], dom2024:1.2, intl2024:0.4, revenue2024:5, stay2024:2.8,
+    purposes:{leisure:.58,vfr:.22,business:.14,religious:.06},
+    attractions:["Raghadan forest park","Shada Mountain","Heritage villages"]
+  },
+  { id:"jazan",    name:"Jazan",             capital:"Jazan",      curve:"leisure",   color:"#13d18a",
+    path:"M 210 690 L 240 740 L 250 790 L 200 800 L 170 750 Z",
+    label:[215,755], dom2024:1.7, intl2024:0.6, revenue2024:7, stay2024:2.6,
+    purposes:{leisure:.50,vfr:.30,business:.14,religious:.06},
+    attractions:["Farasan Islands","Fifa Mountains","Jazan Corniche"]
+  },
+  { id:"najran",   name:"Najran",            capital:"Najran",     curve:"leisure",   color:"#e6c478",
+    path:"M 425 700 L 600 690 L 590 770 L 425 770 Z",
+    label:[505,735], dom2024:0.8, intl2024:0.3, revenue2024:3, stay2024:2.2,
+    purposes:{leisure:.40,vfr:.28,business:.22,religious:.10},
+    attractions:["Al-Ukhdood archaeology","Najran Dam","Mud-brick palaces"]
+  }
+];
+
+const YEAR_CURVES = {
+  // 2020 .. 2025  (2025 partial-year projection)
+  religious: [0.20, 0.42, 0.78, 0.92, 1.00, 1.16],
+  business:  [0.55, 0.68, 0.84, 0.94, 1.00, 1.09],
+  leisure:   [0.28, 0.52, 0.78, 0.91, 1.00, 1.22]
+};
+
+const SOURCE_COUNTRIES = [
+  { code:"EG", name:"Egypt",        flag:"🇪🇬", share:.142 },
+  { code:"PK", name:"Pakistan",     flag:"🇵🇰", share:.115 },
+  { code:"ID", name:"Indonesia",    flag:"🇮🇩", share:.094 },
+  { code:"IN", name:"India",        flag:"🇮🇳", share:.088 },
+  { code:"BD", name:"Bangladesh",   flag:"🇧🇩", share:.066 },
+  { code:"AE", name:"UAE",          flag:"🇦🇪", share:.058 },
+  { code:"YE", name:"Yemen",        flag:"🇾🇪", share:.044 },
+  { code:"SD", name:"Sudan",        flag:"🇸🇩", share:.042 },
+  { code:"US", name:"United States",flag:"🇺🇸", share:.034 },
+  { code:"GB", name:"United Kingdom",flag:"🇬🇧",share:.029 }
+];
+
+const PURPOSE_META = {
+  religious: { label:"Religious",         color:"#0a8754" },
+  leisure:   { label:"Leisure",           color:"#e6c478" },
+  business:  { label:"Business",          color:"#5b8def" },
+  vfr:       { label:"Friends &amp; Family", color:"#b074d6" }
+};
+
+/* =========================================================
+   STATE
+   ========================================================= */
+const STATE = {
+  year: 2024,
+  type: "all",         // all | international | domestic
+  purpose: "all",      // all | religious | leisure | business | vfr
+  selected: null,      // region id
+  compare: new Set(),
+  playing: false
+};
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+const $  = (s, r=document)=>r.querySelector(s);
+const $$ = (s, r=document)=>[...r.querySelectorAll(s)];
+
+const fmt = (n, d=1) => {
+  if (n === null || n === undefined) return "—";
+  if (n >= 100) return n.toFixed(0);
+  if (n >= 10)  return n.toFixed(1);
+  return n.toFixed(d);
+};
+const fmtPct = n => (n*100).toFixed(0)+"%";
+
+function regionVisits(r, year=STATE.year, type=STATE.type, purpose=STATE.purpose){
+  const idx = year - 2020;
+  const mult = YEAR_CURVES[r.curve][idx];
+  let intl = r.intl2024 * mult;
+  let dom  = r.dom2024  * mult;
+  if (type === "international") dom = 0;
+  if (type === "domestic")      intl = 0;
+  let total = intl + dom;
+  if (purpose !== "all"){
+    const share = r.purposes[purpose] || 0;
+    total *= share;
+    intl  *= share;
+    dom   *= share;
+  }
+  const baselineTotal = r.intl2024 + r.dom2024;
+  const revenue = r.revenue2024 * (total / Math.max(0.0001, baselineTotal));
+  const stay = r.stay2024;
+  return { total, intl, dom, revenue, stay };
+}
+
+function totalsForYear(year=STATE.year, type=STATE.type, purpose=STATE.purpose){
+  let total=0, intl=0, dom=0, revenue=0, stayWeighted=0;
+  REGIONS.forEach(r => {
+    const v = regionVisits(r, year, type, purpose);
+    total += v.total; intl += v.intl; dom += v.dom; revenue += v.revenue;
+    stayWeighted += v.stay * v.total;
+  });
+  const stay = total > 0 ? stayWeighted/total : 0;
+  return { total, intl, dom, revenue, stay };
+}
+
+function yearSeries(type=STATE.type, purpose=STATE.purpose){
+  return [2020,2021,2022,2023,2024,2025].map(y => ({ y, ...totalsForYear(y, type, purpose) }));
+}
+
+function purposeMixYear(year=STATE.year, type=STATE.type){
+  const out = { religious:0, leisure:0, business:0, vfr:0 };
+  REGIONS.forEach(r => {
+    const v = regionVisits(r, year, type, "all");
+    for (const p of Object.keys(out)) out[p] += v.total * (r.purposes[p] || 0);
+  });
+  return out;
+}
+
+function rankRegions(year=STATE.year, type=STATE.type, purpose=STATE.purpose){
+  return REGIONS
+    .map(r => ({ r, v: regionVisits(r, year, type, purpose) }))
+    .sort((a,b)=> b.v.total - a.v.total);
+}
+
+/* =========================================================
+   COLOR SCALE  (low → high)
+   ========================================================= */
+function fillFor(value, max){
+  const t = Math.max(0, Math.min(1, value / Math.max(0.0001, max)));
+  // interpolate through deep-green → green → gold → orange
+  const stops = [
+    [0.00, [16, 60, 42]],
+    [0.25, [10,135, 84]],
+    [0.55, [40,191,130]],
+    [0.80, [230,196,120]],
+    [1.00, [255,180, 84]]
+  ];
+  let a = stops[0], b = stops[stops.length-1];
+  for (let i=0; i<stops.length-1; i++){
+    if (t >= stops[i][0] && t <= stops[i+1][0]){ a = stops[i]; b = stops[i+1]; break; }
+  }
+  const k = (t - a[0]) / Math.max(0.0001, (b[0]-a[0]));
+  const c = a[1].map((v,i)=> Math.round(v + (b[1][i]-v)*k));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+
+/* =========================================================
+   COUNTER ANIMATION
+   ========================================================= */
+function animateNumber(el, to, decimals=1, suffix=""){
+  const from = parseFloat(el.dataset.cur || "0");
+  const dur = 600;
+  const start = performance.now();
+  function step(t){
+    const k = Math.min(1, (t-start)/dur);
+    const e = 1 - Math.pow(1-k, 3);
+    const v = from + (to-from)*e;
+    el.textContent = fmt(v, decimals) + suffix;
+    if (k < 1) requestAnimationFrame(step);
+    else el.dataset.cur = to;
+  }
+  requestAnimationFrame(step);
+}
+
+/* =========================================================
+   RENDER: MAP
+   ========================================================= */
+function renderMap(){
+  const svg = $("#map");
+  svg.innerHTML = "";
+
+  // defs (gradient for ocean / shadow)
+  const defs = document.createElementNS("http://www.w3.org/2000/svg","defs");
+  defs.innerHTML = `
+    <linearGradient id="sea" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%"  stop-color="rgba(91,141,239,.10)"/>
+      <stop offset="100%" stop-color="rgba(91,141,239,.02)"/>
+    </linearGradient>
+    <filter id="region-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  `;
+  svg.appendChild(defs);
+
+  // sea background
+  const sea = document.createElementNS("http://www.w3.org/2000/svg","rect");
+  sea.setAttribute("x","0"); sea.setAttribute("y","0");
+  sea.setAttribute("width","1000"); sea.setAttribute("height","800");
+  sea.setAttribute("fill","url(#sea)");
+  svg.appendChild(sea);
+
+  // country backdrop (soft halo behind regions)
+  const halo = document.createElementNS("http://www.w3.org/2000/svg","g");
+  halo.setAttribute("filter","url(#region-glow)");
+  halo.setAttribute("opacity","0.55");
+  REGIONS.forEach(r=>{
+    const p = document.createElementNS("http://www.w3.org/2000/svg","path");
+    p.setAttribute("d", r.path); p.setAttribute("fill", "rgba(0,168,107,.18)");
+    halo.appendChild(p);
+  });
+  svg.appendChild(halo);
+
+  // ranked values for normalisation
+  const ranked = rankRegions();
+  const max = ranked[0]?.v.total || 1;
+
+  const gRegions = document.createElementNS("http://www.w3.org/2000/svg","g");
+  gRegions.setAttribute("id","g-regions");
+  svg.appendChild(gRegions);
+
+  const gLabels = document.createElementNS("http://www.w3.org/2000/svg","g");
+  gLabels.setAttribute("id","g-labels");
+  svg.appendChild(gLabels);
+
+  REGIONS.forEach(r => {
+    const v = regionVisits(r);
+    const p = document.createElementNS("http://www.w3.org/2000/svg","path");
+    p.setAttribute("d", r.path);
+    p.setAttribute("fill", fillFor(v.total, max));
+    p.setAttribute("class","region");
+    p.dataset.id = r.id;
+    p.addEventListener("mousemove", (e)=> showTooltip(e, r));
+    p.addEventListener("mouseleave", hideTooltip);
+    p.addEventListener("click", (e)=> handleRegionClick(r, e));
+    gRegions.appendChild(p);
+
+    // label
+    const t = document.createElementNS("http://www.w3.org/2000/svg","text");
+    t.setAttribute("x", r.label[0]); t.setAttribute("y", r.label[1]);
+    t.setAttribute("text-anchor","middle");
+    t.setAttribute("class","label");
+    const num = v.total >= 1 ? fmt(v.total,1)+"M" : fmt(v.total*1000,0)+"K";
+    t.innerHTML = `${r.name} <tspan class="num">${num}</tspan>`;
+    gLabels.appendChild(t);
+  });
+
+  // capital marker for Riyadh
+  const cap = document.createElementNS("http://www.w3.org/2000/svg","circle");
+  cap.setAttribute("cx",570); cap.setAttribute("cy",525);
+  cap.setAttribute("r",4); cap.setAttribute("fill","#e6c478");
+  cap.setAttribute("stroke","#fff"); cap.setAttribute("stroke-width","1.5");
+  gLabels.appendChild(cap);
+}
+
+function updateMap(){
+  const ranked = rankRegions();
+  const max = ranked[0]?.v.total || 1;
+  REGIONS.forEach(r => {
+    const v = regionVisits(r);
+    const el = $(`.region[data-id="${r.id}"]`);
+    if (el){
+      el.setAttribute("fill", fillFor(v.total, max));
+      el.classList.toggle("selected", STATE.compare.has(r.id) || STATE.selected===r.id);
+    }
+  });
+  // refresh labels (numbers)
+  const labels = $$("#g-labels text");
+  labels.forEach((t,i)=>{
+    const r = REGIONS[i]; if (!r) return;
+    const v = regionVisits(r);
+    const num = v.total >= 1 ? fmt(v.total,1)+"M" : fmt(v.total*1000,0)+"K";
+    t.innerHTML = `${r.name} <tspan class="num">${num}</tspan>`;
+  });
+}
+
+/* =========================================================
+   TOOLTIP
+   ========================================================= */
+const tip = $("#tooltip");
+function showTooltip(e, r){
+  const v = regionVisits(r);
+  const intlShare = v.total > 0 ? (v.intl/v.total) : 0;
+  tip.innerHTML = `
+    <div class="ttl"><span class="dot" style="background:${r.color}"></span>${r.name}</div>
+    <div class="rows">
+      <span class="k">Total</span><span class="v">${fmt(v.total,1)}M</span>
+      <span class="k">International</span><span class="v">${fmt(v.intl,1)}M · ${fmtPct(intlShare)}</span>
+      <span class="k">Domestic</span><span class="v">${fmt(v.dom,1)}M</span>
+      <span class="k">Revenue</span><span class="v">${fmt(v.revenue,1)}B SAR</span>
+      <span class="k">Avg stay</span><span class="v">${fmt(v.stay,1)} nights</span>
+    </div>
+    <div class="hint">Click to ${STATE.compare.has(r.id)?"remove from":"add to"} comparison · long-press for detail</div>
+  `;
+  const cardRect = $(".map-card").getBoundingClientRect();
+  const x = e.clientX - cardRect.left;
+  const y = e.clientY - cardRect.top;
+  tip.style.left = x + "px";
+  tip.style.top  = y + "px";
+  tip.classList.add("show");
+}
+function hideTooltip(){ tip.classList.remove("show"); }
+
+/* =========================================================
+   REGION CLICK  (compare + detail)
+   ========================================================= */
+let pressTimer = null;
+function handleRegionClick(r, e){
+  // shift = open detail directly
+  if (e.shiftKey){ openDetail(r.id); return; }
+  if (STATE.compare.has(r.id)) STATE.compare.delete(r.id);
+  else STATE.compare.add(r.id);
+  STATE.selected = r.id;
+  renderCompare();
+  updateMap();
+}
+
+document.addEventListener("dblclick", e=>{
+  const r = e.target.closest(".region");
+  if (!r) return;
+  openDetail(r.dataset.id);
+});
+
+/* =========================================================
+   COMPARE CHIPS
+   ========================================================= */
+function renderCompare(){
+  const c = $("#compare");
+  c.innerHTML = "";
+  if (STATE.compare.size === 0){
+    c.innerHTML = `<span class="hint">Click regions on the map to add them here · double-click to open detail</span>`;
+    return;
+  }
+  STATE.compare.forEach(id=>{
+    const r = REGIONS.find(x=>x.id===id); if (!r) return;
+    const v = regionVisits(r);
+    const chip = document.createElement("span");
+    chip.className = "chip";
+    chip.innerHTML = `
+      <span class="sw" style="background:${r.color}"></span>
+      <b>${r.name}</b>
+      <span class="muted">${fmt(v.total,1)}M</span>
+      <button title="Remove">×</button>
+    `;
+    chip.querySelector("button").addEventListener("click", ()=>{
+      STATE.compare.delete(id); renderCompare(); updateMap();
+    });
+    chip.addEventListener("click", e => {
+      if (e.target.tagName === "BUTTON") return;
+      openDetail(id);
+    });
+    c.appendChild(chip);
+  });
+}
+
+/* =========================================================
+   RANK LIST
+   ========================================================= */
+function renderRanks(){
+  const list = $("#rank-list");
+  list.innerHTML = "";
+  const ranked = rankRegions();
+  const max = ranked[0]?.v.total || 1;
+  ranked.forEach((row, i)=>{
+    const r = row.r, v = row.v;
+    const el = document.createElement("div");
+    el.className = "rank-row" + (i===0?" top1":"");
+    el.innerHTML = `
+      <div class="pos">${i+1}</div>
+      <div>
+        <div class="nm">${r.name}</div>
+        <div class="meta">${r.capital} · ${fmtPct(v.intl/Math.max(.001,v.total))} intl</div>
+      </div>
+      <div class="val">${fmt(v.total,1)}M</div>
+      <div class="bar-wrap"><div class="bar" style="width:0"></div></div>
+    `;
+    el.addEventListener("click", ()=> openDetail(r.id));
+    list.appendChild(el);
+    // animate the bar
+    requestAnimationFrame(()=>{
+      el.querySelector(".bar").style.width = ((v.total/max)*100).toFixed(1)+"%";
+    });
+  });
+  $("#rank-count").textContent = `${ranked.length} regions`;
+}
+
+/* =========================================================
+   DONUT  (purpose split)
+   ========================================================= */
+function renderDonut(){
+  const wrap = $("#donut");
+  wrap.innerHTML = "";
+  const purposes = STATE.purpose === "all"
+    ? purposeMixYear()
+    : (function(){
+        const m = purposeMixYear();
+        const out = { religious:0, leisure:0, business:0, vfr:0 };
+        out[STATE.purpose] = m[STATE.purpose];
+        return out;
+      })();
+  const total = Object.values(purposes).reduce((a,b)=>a+b,0);
+  $("#donut-center").textContent = fmt(total,1) + "M";
+
+  const cx=60, cy=60, r=46, w=14;
+  // background ring
+  const bg = document.createElementNS("http://www.w3.org/2000/svg","circle");
+  bg.setAttribute("cx",cx); bg.setAttribute("cy",cy); bg.setAttribute("r",r);
+  bg.setAttribute("fill","none"); bg.setAttribute("stroke","rgba(255,255,255,.06)");
+  bg.setAttribute("stroke-width",w);
+  wrap.appendChild(bg);
+
+  const entries = Object.entries(purposes).sort((a,b)=>b[1]-a[1]);
+  const C = 2 * Math.PI * r;
+  let offset = 0;
+  entries.forEach(([k,val])=>{
+    if (val<=0) return;
+    const len = (val/Math.max(.0001,total)) * C;
+    const arc = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    arc.setAttribute("cx",cx); arc.setAttribute("cy",cy); arc.setAttribute("r",r);
+    arc.setAttribute("fill","none");
+    arc.setAttribute("stroke", PURPOSE_META[k].color);
+    arc.setAttribute("stroke-width",w);
+    arc.setAttribute("stroke-linecap","round");
+    arc.setAttribute("stroke-dasharray", `${len} ${C}`);
+    arc.setAttribute("stroke-dashoffset", -offset);
+    arc.setAttribute("transform",`rotate(-90 ${cx} ${cy})`);
+    arc.style.transition = "stroke-dasharray .6s ease, stroke-dashoffset .6s ease";
+    wrap.appendChild(arc);
+    offset += len;
+  });
+
+  // legend
+  const lg = $("#donut-legend"); lg.innerHTML = "";
+  entries.forEach(([k,val])=>{
+    const pct = val/Math.max(.0001,total);
+    const row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = `
+      <span class="sw" style="background:${PURPOSE_META[k].color}"></span>
+      <span>${PURPOSE_META[k].label}</span>
+      <span class="vv">${fmt(val,1)}M</span>
+      <span class="pct">${fmtPct(pct)}</span>
+    `;
+    lg.appendChild(row);
+  });
+}
+
+/* =========================================================
+   SOURCE COUNTRIES
+   ========================================================= */
+function renderOrigin(){
+  const wrap = $("#origin"); wrap.innerHTML = "";
+  const totals = totalsForYear();
+  const baseIntl = totals.intl; // millions
+  const sorted = [...SOURCE_COUNTRIES].sort((a,b)=>b.share-a.share);
+  const max = sorted[0].share;
+
+  sorted.forEach(c=>{
+    const val = baseIntl * c.share;
+    const row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = `
+      <span class="flag">${c.flag}</span>
+      <span class="nm">${c.name}</span>
+      <span class="vv">${fmt(val,2)}M</span>
+      <span class="barbg"><i style="width:${(c.share/max*100).toFixed(1)}%"></i></span>
+    `;
+    wrap.appendChild(row);
+  });
+  // trigger animations after insertion
+  requestAnimationFrame(()=>{
+    $$("#origin .barbg > i").forEach(el=>{
+      const w = el.style.width;
+      el.style.width = "0%";
+      requestAnimationFrame(()=> el.style.width = w);
+    });
+  });
+}
+
+/* =========================================================
+   KPI ROW + SPARKLINES
+   ========================================================= */
+function setDelta(el, prev, curr){
+  if (!prev){ el.textContent = ""; return; }
+  const pct = ((curr-prev)/prev)*100;
+  const up = pct >= 0;
+  el.className = "delta" + (up?"":" down");
+  el.innerHTML = (up
+    ? `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 5l7 8h-4v6h-6v-6H5z"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 19l-7-8h4V5h6v6h4z"/></svg>`)
+    + ` ${Math.abs(pct).toFixed(1)}% vs ${STATE.year-1}`;
+}
+
+function renderSpark(el, values){
+  if (!el) return;
+  const W=96, H=34;
+  const max = Math.max(...values), min = Math.min(...values);
+  const span = Math.max(.001, max-min);
+  const pts = values.map((v,i)=>{
+    const x = (i/(values.length-1))*W;
+    const y = H - 4 - ((v-min)/span)*(H-8);
+    return [x,y];
+  });
+  const d = pts.map((p,i)=> (i?"L":"M") + p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
+  const da = `${d} L ${W} ${H} L 0 ${H} Z`;
+  el.innerHTML = `
+    <defs>
+      <linearGradient id="sg-${Math.random().toString(36).slice(2,7)}" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="rgba(19,209,138,.55)"/>
+        <stop offset="100%" stop-color="rgba(19,209,138,0)"/>
+      </linearGradient>
+    </defs>
+    <path d="${da}" fill="rgba(19,209,138,.18)"/>
+    <path d="${d}" fill="none" stroke="var(--brand-2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${pts[pts.length-1][0].toFixed(1)}" cy="${pts[pts.length-1][1].toFixed(1)}" r="2.6" fill="var(--gold)"/>
+  `;
+}
+
+function renderKpis(){
+  const t = totalsForYear();
+  const prev = totalsForYear(STATE.year-1);
+  animateNumber($('[data-k="total"]'), t.total, 1);
+  animateNumber($('[data-k="intl"]'),  t.intl,  1);
+  animateNumber($('[data-k="dom"]'),   t.dom,   1);
+  animateNumber($('[data-k="rev"]'),   t.revenue, 0);
+  animateNumber($('[data-k="stay"]'),  t.stay,  1);
+
+  setDelta($('[data-k="totalDelta"]'), prev.total,    t.total);
+  setDelta($('[data-k="intlDelta"]'),  prev.intl,     t.intl);
+  setDelta($('[data-k="domDelta"]'),   prev.dom,      t.dom);
+  setDelta($('[data-k="revDelta"]'),   prev.revenue,  t.revenue);
+  setDelta($('[data-k="stayDelta"]'),  prev.stay,     t.stay);
+
+  const series = yearSeries();
+  renderSpark($('[data-k="sparkTotal"]'), series.map(s=>s.total));
+  renderSpark($('[data-k="sparkIntl"]'),  series.map(s=>s.intl));
+  renderSpark($('[data-k="sparkDom"]'),   series.map(s=>s.dom));
+  renderSpark($('[data-k="sparkRev"]'),   series.map(s=>s.revenue));
+  renderSpark($('[data-k="sparkStay"]'),  series.map(s=>s.stay));
+}
+
+/* =========================================================
+   TREND / MONTHLY  (synthetic shape per year)
+   ========================================================= */
+function monthlyShape(year, total){
+  // Shape: Hajj month spike for religious + Ramadan moderate + summer (Asir),
+  // winter peak (NEOM/AlUla). We approximate with mixed gaussian over 12 months.
+  const months = Array.from({length:12}, (_,i)=> i+1);
+  const base = months.map(m=>{
+    let v = 1
+      + 0.55*Math.exp(-((m-6.5)**2)/12)   // mid-year warm uptick
+      + 0.85*Math.exp(-((m-7.5)**2)/2.5)  // Hajj spike (approx)
+      + 0.40*Math.exp(-((m-3)**2)/4)      // Ramadan
+      + 0.45*Math.exp(-((m-12.5)**2)/3);  // year-end leisure
+    return Math.max(.2, v);
+  });
+  const sum = base.reduce((a,b)=>a+b,0);
+  return base.map(v => (v/sum)*total);
+}
+
+function renderTrend(){
+  const svg = $("#trend");
+  svg.innerHTML = "";
+  const t = totalsForYear();
+  const data = monthlyShape(STATE.year, t.total);
+  const W=760, H=240, padL=40, padR=20, padT=20, padB=30;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+
+  const max = Math.max(...data)*1.15;
+  const xFor = i => padL + (i/(data.length-1))*innerW;
+  const yFor = v => padT + innerH - (v/max)*innerH;
+
+  // grid + y-axis labels
+  const grid = document.createElementNS("http://www.w3.org/2000/svg","g");
+  grid.setAttribute("class","grid");
+  const axis = document.createElementNS("http://www.w3.org/2000/svg","g");
+  axis.setAttribute("class","axis");
+  for (let i=0;i<=4;i++){
+    const y = padT + (i/4)*innerH;
+    const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("x1",padL); line.setAttribute("x2",W-padR);
+    line.setAttribute("y1",y); line.setAttribute("y2",y);
+    grid.appendChild(line);
+    const label = document.createElementNS("http://www.w3.org/2000/svg","text");
+    label.setAttribute("x", padL-6); label.setAttribute("y", y+3);
+    label.setAttribute("text-anchor","end");
+    label.textContent = fmt(max - (i/4)*max, 1)+"M";
+    axis.appendChild(label);
+  }
+  svg.appendChild(grid);
+  svg.appendChild(axis);
+
+  // gradient
+  const defs = document.createElementNS("http://www.w3.org/2000/svg","defs");
+  defs.innerHTML = `
+    <linearGradient id="grad-area" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="rgba(19,209,138,.55)"/>
+      <stop offset="100%" stop-color="rgba(19,209,138,0)"/>
+    </linearGradient>
+  `;
+  svg.appendChild(defs);
+
+  // smooth path
+  const pts = data.map((v,i)=> [xFor(i), yFor(v)]);
+  let path = `M ${pts[0][0]} ${pts[0][1]}`;
+  for (let i=1; i<pts.length; i++){
+    const [x0,y0] = pts[i-1], [x1,y1] = pts[i];
+    const cx = (x0+x1)/2;
+    path += ` C ${cx} ${y0}, ${cx} ${y1}, ${x1} ${y1}`;
+  }
+  const area = path + ` L ${pts[pts.length-1][0]} ${padT+innerH} L ${pts[0][0]} ${padT+innerH} Z`;
+
+  const ap = document.createElementNS("http://www.w3.org/2000/svg","path");
+  ap.setAttribute("d", area); ap.setAttribute("class","trend-area");
+  svg.appendChild(ap);
+
+  const lp = document.createElementNS("http://www.w3.org/2000/svg","path");
+  lp.setAttribute("d", path); lp.setAttribute("class","trend-line");
+  svg.appendChild(lp);
+
+  // dots + month tip
+  const mtip = $("#month-tip");
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  pts.forEach((p,i)=>{
+    const dot = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    dot.setAttribute("cx",p[0]); dot.setAttribute("cy",p[1]); dot.setAttribute("r",4);
+    dot.setAttribute("class","trend-dot");
+    dot.addEventListener("mousemove", e=>{
+      const rect = $(".trend-card").getBoundingClientRect();
+      mtip.style.left = (e.clientX - rect.left) + "px";
+      mtip.style.top  = (e.clientY - rect.top - 8) + "px";
+      mtip.innerHTML  = `<b>${months[i]} ${STATE.year}</b> · ${fmt(data[i],2)}M visits`;
+      mtip.classList.add("show");
+    });
+    dot.addEventListener("mouseleave", ()=> mtip.classList.remove("show"));
+    svg.appendChild(dot);
+
+    const t2 = document.createElementNS("http://www.w3.org/2000/svg","text");
+    t2.setAttribute("x",p[0]); t2.setAttribute("y", H-8);
+    t2.setAttribute("text-anchor","middle"); t2.setAttribute("class","axis");
+    t2.style.fill = "var(--txt-mute)"; t2.style.font="10.5px ui-sans-serif";
+    t2.textContent = months[i];
+    svg.appendChild(t2);
+  });
+
+  // re-trigger draw animation
+  lp.style.animation = "none";
+  lp.getBoundingClientRect();
+  lp.style.animation = "";
+}
+
+/* =========================================================
+   REGION-MIX MINI BARS  (right bottom card)
+   ========================================================= */
+function renderMix(){
+  const list = $("#mix-list"); list.innerHTML = "";
+  const ranked = rankRegions().slice(0, 8);
+  const max = ranked[0]?.v.total || 1;
+  ranked.forEach(({r,v})=>{
+    const row = document.createElement("div");
+    row.className = "r";
+    row.innerHTML = `
+      <div title="${r.name}">${r.name}</div>
+      <div class="barbg"><i style="width:0%"></i></div>
+      <div class="vv">${fmt(v.total,1)}M</div>
+    `;
+    list.appendChild(row);
+    requestAnimationFrame(()=>{
+      row.querySelector("i").style.width = ((v.total/max)*100).toFixed(1)+"%";
+    });
+  });
+}
+
+/* =========================================================
+   DETAIL PANEL
+   ========================================================= */
+function openDetail(id){
+  const r = REGIONS.find(x=>x.id===id); if (!r) return;
+  const v = regionVisits(r);
+  const rank = rankRegions().findIndex(x => x.r.id === id) + 1;
+  $("#d-swatch").style.background = r.color;
+  $("#d-name").textContent = r.name;
+  $("#d-cap").textContent = `Capital: ${r.capital} · curve: ${r.curve}`;
+  $("#d-total").textContent = fmt(v.total,1);
+  $("#d-intl").textContent = fmt(v.intl,1);
+  $("#d-dom").textContent = fmt(v.dom,1);
+  $("#d-rev").textContent = fmt(v.revenue,1);
+  $("#d-stay").textContent = fmt(v.stay,1);
+  $("#d-rank").textContent = "#"+rank;
+
+  // purpose bars
+  const purposes = r.purposes;
+  const pwrap = $("#d-purposes"); pwrap.innerHTML = "";
+  Object.entries(purposes).sort((a,b)=>b[1]-a[1]).forEach(([k,val])=>{
+    const row = document.createElement("div");
+    row.className = "r";
+    row.innerHTML = `
+      <div>${PURPOSE_META[k].label}</div>
+      <div class="barbg"><i style="width:0%; background:${PURPOSE_META[k].color}"></i></div>
+      <div class="vv">${fmtPct(val)}</div>
+    `;
+    pwrap.appendChild(row);
+    requestAnimationFrame(()=> row.querySelector("i").style.width = (val*100).toFixed(0)+"%");
+  });
+
+  // 5-year sparkline
+  const traj = [2020,2021,2022,2023,2024,2025].map(y=> regionVisits(r,y,"all","all").total);
+  const svg = $("#d-traj"); svg.innerHTML = "";
+  const W=380,H=120, padL=30, padR=10, padT=12, padB=22;
+  const max = Math.max(...traj)*1.2;
+  const xF = i => padL + (i/(traj.length-1))*(W-padL-padR);
+  const yF = v => padT + (H-padT-padB) - (v/max)*(H-padT-padB);
+  const pts = traj.map((v,i)=>[xF(i),yF(v)]);
+  let path = `M ${pts[0][0]} ${pts[0][1]}`;
+  for (let i=1;i<pts.length;i++){
+    const [x0,y0]=pts[i-1],[x1,y1]=pts[i];
+    const cx=(x0+x1)/2;
+    path += ` C ${cx} ${y0}, ${cx} ${y1}, ${x1} ${y1}`;
+  }
+  const area = path + ` L ${pts[pts.length-1][0]} ${H-padB} L ${pts[0][0]} ${H-padB} Z`;
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="dg" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="${r.color}" stop-opacity=".55"/>
+        <stop offset="100%" stop-color="${r.color}" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path d="${area}" fill="url(#dg)"/>
+    <path d="${path}" fill="none" stroke="${r.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    ${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="${i===STATE.year-2020?'var(--gold)':r.color}"/>`).join("")}
+    ${pts.map((p,i)=>`<text x="${p[0]}" y="${H-6}" text-anchor="middle" style="fill:var(--txt-mute);font:10px ui-sans-serif">${2020+i}</text>`).join("")}
+  `;
+
+  // attractions chips
+  const a = $("#d-attractions"); a.innerHTML = "";
+  r.attractions.forEach(name=>{
+    const c = document.createElement("span");
+    c.className = "chip";
+    c.style.background = "var(--bg-3)";
+    c.innerHTML = `<span class="sw" style="background:${r.color}"></span>${name}`;
+    a.appendChild(c);
+  });
+
+  $("#detail").classList.add("open");
+  $("#detail").setAttribute("aria-hidden","false");
+}
+function closeDetail(){
+  $("#detail").classList.remove("open");
+  $("#detail").setAttribute("aria-hidden","true");
+}
+
+/* =========================================================
+   META PILLS
+   ========================================================= */
+function updateMeta(){
+  $("#meta-year").textContent = STATE.year;
+  $("#meta-type").textContent = STATE.type === "all" ? "All visitors"
+                              : STATE.type === "international" ? "International only" : "Domestic only";
+  $("#meta-purpose").textContent = STATE.purpose === "all"
+    ? "All purposes" : PURPOSE_META[STATE.purpose].label.replace("&amp;","&");
+  $("#year-now").textContent = STATE.year;
+}
+
+/* =========================================================
+   FULL REFRESH
+   ========================================================= */
+function refresh(){
+  updateMeta();
+  updateMap();
+  renderKpis();
+  renderRanks();
+  renderDonut();
+  renderOrigin();
+  renderTrend();
+  renderMix();
+  if (STATE.selected) {
+    // refresh detail if open
+    if ($("#detail").classList.contains("open")) openDetail(STATE.selected);
+  }
+}
+
+/* =========================================================
+   EVENT WIRE-UP
+   ========================================================= */
+// type segmented
+$$("[data-type]").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    $$("[data-type]").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on");
+    STATE.type = b.dataset.type;
+    refresh();
+  });
+});
+
+// purpose select
+$("#purpose").addEventListener("change", e=>{
+  STATE.purpose = e.target.value;
+  refresh();
+});
+
+// year slider
+$("#year").addEventListener("input", e=>{
+  STATE.year = parseInt(e.target.value,10);
+  refresh();
+});
+
+// play timeline
+let playTimer = null;
+$("#play-btn").addEventListener("click", ()=>{
+  if (STATE.playing){
+    clearInterval(playTimer); STATE.playing=false;
+    $("#play-btn").innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span>Play</span>`;
+    return;
+  }
+  STATE.playing = true;
+  $("#play-btn").innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg><span>Pause</span>`;
+  playTimer = setInterval(()=>{
+    STATE.year = STATE.year >= 2025 ? 2020 : STATE.year + 1;
+    $("#year").value = STATE.year;
+    refresh();
+  }, 900);
+});
+
+// theme toggle
+$("#theme-toggle").addEventListener("click", ()=>{
+  const cur = document.documentElement.getAttribute("data-theme");
+  document.documentElement.setAttribute("data-theme", cur==="dark"?"light":"dark");
+});
+
+// reset
+$("#reset-btn").addEventListener("click", ()=>{
+  STATE.year = 2024;
+  STATE.type = "all";
+  STATE.purpose = "all";
+  STATE.compare.clear();
+  STATE.selected = null;
+  $("#year").value = 2024;
+  $("#purpose").value = "all";
+  $$("[data-type]").forEach(x=>x.classList.toggle("on", x.dataset.type==="all"));
+  renderCompare();
+  refresh();
+  closeDetail();
+});
+
+// detail close
+$("#d-close").addEventListener("click", closeDetail);
+document.addEventListener("keydown", e=>{
+  if (e.key === "Escape") closeDetail();
+  if (e.key === " " && (e.target===document.body || e.target.tagName!=="INPUT")){
+    e.preventDefault();
+    $("#play-btn").click();
+  }
+});
+
+/* =========================================================
+   INIT
+   ========================================================= */
+renderMap();
+renderCompare();
+refresh();
+
+/* subtle entrance: stagger region fade-in */
+$$(".region").forEach((el,i)=>{
+  el.style.opacity = "0";
+  el.style.transform = "translateY(8px)";
+  setTimeout(()=>{
+    el.style.transition = "opacity .55s ease, transform .55s ease";
+    el.style.opacity = "1";
+    el.style.transform = "translateY(0)";
+  }, 60 + i*40);
+});
+</script>
+</body>
+</html>
