@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sift — git-native task management</title>
+<style>
+  :root {
+    --bg: #09090b;
+    --bg-2: #18181b;
+    --line: #27272a;
+    --ink: #fafafa;
+    --mute: #a1a1aa;
+    --accent: #34d399;
+    --accent-ink: #022c22;
+    --radius: 12px;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", "Cascadia Code", Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--font-sans); }
+  body { font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+  /* nav: single-line, ≤80px */
+  nav {
+    height: 64px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+  }
+  nav .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -0.01em; }
+  nav .brand .mark { width: 22px; height: 22px; border-radius: 6px; background: var(--accent); display: inline-block; }
+  nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; color: var(--mute); font-size: 14px; }
+  nav ul a:hover { color: var(--ink); }
+  nav .cta { font-size: 14px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); }
+  nav .cta:hover { background: var(--bg-2); }
+
+  /* hero: split layout, left content + right device */
+  .hero { padding: 96px 0 80px; border-bottom: 1px solid var(--line); }
+  .hero .grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
+  @media (min-width: 900px) { .hero .grid { grid-template-columns: 6fr 5fr; gap: 64px; } }
+  .hero h1 { font-size: clamp(40px, 6vw, 64px); line-height: 1.05; letter-spacing: -0.035em; margin: 0 0 20px; max-width: 14ch; }
+  .hero h1 em { font-style: italic; font-weight: 600; padding-bottom: 2px; }
+  .hero p { color: var(--mute); font-size: 18px; max-width: 48ch; margin: 0 0 32px; }
+  .hero .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary, .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 44px; padding: 0 18px; border-radius: 999px;
+    font-size: 14px; font-weight: 500; transition: transform .12s ease;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-ghost { border: 1px solid var(--line); color: var(--ink); }
+  .btn-ghost:hover { background: var(--bg-2); }
+
+  /* device preview (no fake-screenshot div — real-looking command output) */
+  .device { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; font-family: var(--font-mono); font-size: 13.5px; line-height: 1.7; }
+  .device .row { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: baseline; padding: 6px 4px; border-radius: 8px; }
+  .device .row:hover { background: rgba(255,255,255,.02); }
+  .device .row .id { color: #52525b; }
+  .device .row .tag { font-size: 11px; padding: 2px 8px; border-radius: 999px; color: var(--mute); border: 1px solid var(--line); }
+  .device .row .tag.open { color: var(--accent); border-color: rgba(52,211,153,.35); }
+  .device .row.done .title { color: var(--mute); text-decoration: line-through; text-decoration-color: rgba(161,161,170,.45); }
+  .device .head { color: var(--mute); border-bottom: 1px solid var(--line); padding-bottom: 8px; margin-bottom: 8px; display: flex; gap: 12px; }
+  .device .head .branch { color: var(--accent); }
+
+  /* logo wall (no industry labels under each) */
+  .logos { padding: 48px 0; border-bottom: 1px solid var(--line); }
+  .logos .label { color: var(--mute); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; text-align: center; margin-bottom: 24px; }
+  .logos .row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 32px; align-items: center; }
+  .logos .row span { color: var(--mute); text-align: center; font-weight: 600; opacity: 0.8; letter-spacing: -0.01em; }
+  @media (max-width: 800px) { .logos .row { grid-template-columns: repeat(3, 1fr); row-gap: 24px; } }
+
+  /* features: varied bento, NOT three equal cards */
+  section.features { padding: 96px 0; border-bottom: 1px solid var(--line); }
+  .features h2 { font-size: clamp(28px, 3.6vw, 40px); letter-spacing: -0.025em; margin: 0 0 12px; max-width: 22ch; }
+  .features .lede { color: var(--mute); max-width: 56ch; margin: 0 0 48px; }
+  .bento { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 900px) {
+    .bento { grid-template-columns: 1.4fr 1fr; grid-template-rows: auto auto; }
+    .bento .a { grid-column: 1 / 2; grid-row: 1 / 3; }
+    .bento .b { grid-column: 2 / 3; grid-row: 1 / 2; }
+    .bento .c { grid-column: 2 / 3; grid-row: 2 / 3; }
+  }
+  .cell { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .cell h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; }
+  .cell p { margin: 0; color: var(--mute); font-size: 15px; }
+  .cell .visual { margin-top: auto; height: 140px; border-radius: 8px; border: 1px solid var(--line); display: grid; place-items: center; color: var(--mute); font-family: var(--font-mono); font-size: 12px; }
+  .cell.a .visual { background:
+      linear-gradient(180deg, transparent 0 50%, var(--line) 50% 51%, transparent 51%) repeat-y,
+      radial-gradient(120% 80% at 0% 100%, rgba(52,211,153,.12), transparent 60%);
+    background-size: 100% 14px, auto;
+    height: 200px;
+  }
+
+  /* quote */
+  .quote { padding: 96px 0; border-bottom: 1px solid var(--line); text-align: left; }
+  .quote blockquote { font-size: clamp(22px, 2.4vw, 30px); letter-spacing: -0.02em; line-height: 1.35; max-width: 26ch; margin: 0 0 24px; }
+  .quote cite { color: var(--mute); font-style: normal; font-size: 14px; }
+
+  /* footer cta — same label as nav cta, no duplicate-intent */
+  footer { padding: 80px 0 56px; }
+  footer .grid { display: grid; grid-template-columns: 1fr; gap: 32px; align-items: end; }
+  @media (min-width: 900px) { footer .grid { grid-template-columns: 2fr 1fr; } }
+  footer h2 { font-size: clamp(28px, 3.6vw, 40px); letter-spacing: -0.025em; margin: 0; max-width: 18ch; }
+  footer p { color: var(--mute); margin: 12px 0 0; }
+  footer .row2 { margin-top: 48px; display: flex; justify-content: space-between; color: var(--mute); font-size: 13px; border-top: 1px solid var(--line); padding-top: 20px; }
+
+  /* reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .btn-primary, .btn-ghost { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="brand"><span class="mark"></span>Sift</div>
+    <ul>
+      <li><a href="#features">Product</a></li>
+      <li><a href="#">Changelog</a></li>
+      <li><a href="#">Docs</a></li>
+      <li><a href="#">Pricing</a></li>
+    </ul>
+    <a class="cta" href="#start">Start free</a>
+  </nav>
+
+  <section class="hero">
+    <div class="grid">
+      <div>
+        <h1>Task management that lives <em>inside</em> your git history.</h1>
+        <p>Branches, commits, and PRs become first-class tasks. No more pasting Linear IDs into commit messages.</p>
+        <div class="ctas">
+          <a class="btn-primary" href="#start">Start free →</a>
+          <a class="btn-ghost" href="#features">See how it works</a>
+        </div>
+      </div>
+      <div class="device" aria-label="Sample task list">
+        <div class="head"><span>sift</span><span class="branch">feat/inbox-redesign</span><span style="margin-left:auto">7 open · 2 done</span></div>
+        <div class="row done"><span class="id">#214</span><span class="title">Migrate inbox query to RSC</span><span class="tag">done</span></div>
+        <div class="row"><span class="id">#218</span><span class="title">Add keyboard nav for nested groups</span><span class="tag open">open</span></div>
+        <div class="row"><span class="id">#221</span><span class="title">Restore drag handle after virtualization</span><span class="tag open">open</span></div>
+        <div class="row"><span class="id">#223</span><span class="title">Spec: cross-repo task references</span><span class="tag">draft</span></div>
+        <div class="row"><span class="id">#225</span><span class="title">Fix empty-state alignment at sm breakpoint</span><span class="tag open">open</span></div>
+        <div class="row done"><span class="id">#226</span><span class="title">Audit focus rings on dark surfaces</span><span class="tag">done</span></div>
+        <div class="row"><span class="id">#227</span><span class="title">Replace ad-hoc useScroll with Motion useScroll</span><span class="tag open">open</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="logos">
+    <div class="label">Trusted by engineering teams at</div>
+    <div class="row">
+      <span>Vercel</span><span>Linear</span><span>Supabase</span>
+      <span>Resend</span><span>Cal.com</span><span>Railway</span>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <h2>One source of truth between code and product.</h2>
+    <p class="lede">Sift indexes branches, commits, and PRs and projects them into tasks you can plan against.</p>
+    <div class="bento">
+      <div class="cell a">
+        <h3>Branch-aware inbox</h3>
+        <p>Every branch becomes a thread. Switch context without re-loading a board.</p>
+        <div class="visual">live: 7 branches · 3 reviewable</div>
+      </div>
+      <div class="cell b">
+        <h3>Git-native priorities</h3>
+        <p>Priority is a label on the branch, not metadata in a third place.</p>
+        <div class="visual">P0 → P3 derived from CODEOWNERS</div>
+      </div>
+      <div class="cell c">
+        <h3>Quiet by default</h3>
+        <p>No badges, no streaks, no nudges. The only notification is a real review request.</p>
+        <div class="visual">0 perpetual animations on this card</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote">
+    <div style="max-width: 56ch">
+      <blockquote>"We dropped two project-tracking tools the week we switched. The PR is the task."</blockquote>
+      <cite>Maria Holland — Staff engineer, Resend</cite>
+    </div>
+  </section>
+
+  <footer id="start">
+    <div class="grid">
+      <div>
+        <h2>Try Sift on one repo.</h2>
+        <p>Free for solo work. Five minutes to set up.</p>
+      </div>
+      <div><a class="btn-primary" href="#">Start free →</a></div>
+    </div>
+    <div class="row2">
+      <span>© Sift Labs</span>
+      <span>Built with the design-taste-frontend skill</span>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
