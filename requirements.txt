@@ -1,0 +1,1 @@
+crewai @ git+https://github.com/crewAIInc/crewAI.git@69c0308f2cf4fa17214eab4db10071abc08602fd#subdirectory=lib/crewai
