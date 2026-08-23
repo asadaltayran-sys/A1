@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fieldnote · a pocket notebook for people who mark paper</title>
+<meta name="description" content="Fieldnote is a pocket notebook. Three formats. Carry one.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='3' fill='%23F1EBDD'/><rect x='5' y='6' width='22' height='20' rx='1.5' fill='none' stroke='%23162135' stroke-width='1.4'/></svg>">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500&display=swap">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  /* Six colour roles, two families. That's the whole rebrand. */
+  :root {
+    --sc-canvas:      #F1EBDD;   /* unbleached paper */
+    --sc-surface:     #EAE1CC;   /* one shade darker */
+    --sc-ink:         #14181F;   /* off-black, warm */
+    --sc-ink-soft:    #5C5849;   /* tinted, never flat gray */
+    --sc-accent:      #1A3358;   /* one accent: fountain-pen ink */
+    --sc-accent-ink:  #F1EBDD;
+
+    --sc-hairline:         color-mix(in oklab, var(--sc-ink) 14%, transparent);
+    --sc-hairline-strong:  color-mix(in oklab, var(--sc-ink) 26%, transparent);
+    --sc-shadow-color:     30 20% 8%;
+
+    --sc-font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sc-font-text:    "Inter", system-ui, sans-serif;
+  }
+  /* The poster grammar caps display at 6rem for normal pages and lifts that
+     cap because the whole page is one hero moment. */
+  :root { --sc-t-4xl: clamp(4rem, 3rem + 12vw, 14rem); }
+  /* Stepped hero on portrait phones — the huge word is a huge word only if it
+     fits the viewport. */
+  @media (max-width: 700px) { :root { --sc-t-4xl: clamp(3.6rem, 2rem + 22vw, 8rem); } }
+
+  html { background: var(--sc-canvas); }
+  body {
+    /* Very light paper grain painted into the ground itself. Real paper is
+       never a flat swatch. */
+    background:
+      radial-gradient(1200px 800px at 12% -10%, color-mix(in oklab, #ffffff 6%, transparent), transparent 60%),
+      radial-gradient(900px 800px at 100% 100%, color-mix(in oklab, var(--sc-ink) 4%, transparent), transparent 60%),
+      var(--sc-canvas);
+  }
+
+  /* Folio in the margin. No fixed nav bar; poster forbids marketing chrome. */
+  .fn-folio {
+    position: fixed; top: clamp(1rem, 3vh, 2rem); left: var(--sc-gutter);
+    right: var(--sc-gutter);
+    z-index: var(--sc-z-chrome);
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--sc-font-text);
+    font-size: var(--sc-t-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sc-ink-soft);
+    mix-blend-mode: multiply;
+  }
+  .fn-folio__mark { color: var(--sc-ink); font-weight: 500; }
+  .fn-folio__place { text-align: right; }
+
+  /* Progress bar — accent, hairline, top of frame. */
+  [data-sc-progress] { background: var(--sc-accent); height: 1px; opacity: 0.9; }
+
+  /* Grain flipped for a light ground — subtract, don't add. */
+  .sc-grain { mix-blend-mode: multiply; opacity: 0.06; }
+
+  /* -------- 1 · STILLNESS -- one word, huge, alone -------- */
+  .fn-stage--still { display: grid; grid-template-columns: 1fr; align-content: center; padding-inline: var(--sc-gutter); }
+  .fn-still {
+    font-family: var(--sc-font-display);
+    font-weight: 400;
+    font-size: var(--sc-t-4xl);
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+    color: var(--sc-ink);
+    margin: 0;
+    max-width: 12ch;
+    text-wrap: balance;
+  }
+  .fn-still-row { display: flex; align-items: flex-end; gap: 0; }
+  .fn-still__dot {
+    font-family: var(--sc-font-display);
+    font-size: var(--sc-t-4xl);
+    line-height: 0.86;
+    color: var(--sc-accent);
+    margin-left: 0.02em;
+  }
+  .fn-still__meta {
+    margin-top: clamp(1.5rem, 3vh, 2.5rem);
+    font-family: var(--sc-font-text);
+    font-size: var(--sc-t-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sc-ink-soft);
+  }
+
+  /* -------- 2 · RESTRAINT -- small paragraph tucked to trail -------- */
+  .fn-restraint {
+    display: grid; grid-template-columns: 1fr;
+    padding-block: var(--sc-section);
+    padding-inline: var(--sc-gutter);
+  }
+  .fn-restraint__inner {
+    margin-left: auto;
+    max-width: 34rem;
+  }
+  .fn-restraint__label {
+    font-family: var(--sc-font-text);
+    font-size: var(--sc-t-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sc-ink-soft);
+    margin: 0 0 1.25rem 0;
+  }
+  .fn-restraint p {
+    font-family: var(--sc-font-display);
+    font-weight: 400;
+    font-size: clamp(1.35rem, 1rem + 1.3vw, 2.05rem);
+    line-height: 1.35;
+    letter-spacing: -0.012em;
+    color: var(--sc-ink);
+    max-width: 30ch;
+    margin: 0;
+  }
+
+  /* -------- 3 · MARKING · PEAK · signature move -------- */
+  .fn-mark {
+    position: relative;
+    width: 100%; height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: center;
+    padding-inline: var(--sc-gutter);
+  }
+  .fn-mark__paper {
+    position: absolute; inset: clamp(1rem, 5vh, 4rem) clamp(1rem, 6vw, 6rem);
+    z-index: 0;
+    background:
+      /* rule lines at 3rem, softened */
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent calc(3rem - 1px),
+        color-mix(in oklab, var(--sc-ink) 8%, transparent) 3rem
+      ),
+      color-mix(in oklab, var(--sc-canvas) 90%, #ffffff 10%);
+    box-shadow:
+      0 1px 0 color-mix(in oklab, var(--sc-ink) 8%, transparent),
+      0 30px 60px -30px hsl(var(--sc-shadow-color) / 0.28);
+    border-top: 1px solid color-mix(in oklab, var(--sc-ink) 10%, transparent);
+    border-left: 1px solid color-mix(in oklab, var(--sc-ink) 6%, transparent);
+  }
+  .fn-mark__svg {
+    position: absolute; inset: clamp(1rem, 5vh, 4rem) clamp(1rem, 6vw, 6rem);
+    width: auto; height: auto;
+    z-index: 1;
+    overflow: visible;
+    pointer-events: none;
+  }
+  /* The nib line: a real stroke, drawn via stroke-dashoffset driven by JS
+     from the act's --sc-p. */
+  .fn-mark__line {
+    stroke: var(--sc-accent);
+    stroke-width: 3;
+    stroke-linecap: round;
+    fill: none;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: calc(1000 * (1 - var(--sc-p, 0)));
+  }
+  .fn-mark__nib {
+    fill: var(--sc-ink);
+    stroke: none;
+    offset-path: path('M 60 320 C 220 260, 380 380, 560 300 S 820 220, 940 300');
+    offset-distance: calc(var(--sc-p, 0) * 100%);
+    offset-rotate: auto;
+  }
+  .fn-mark__flourish {
+    stroke: var(--sc-accent);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: calc(1000 * (1 - clamp(0, (var(--sc-p, 0) - 0.72) / 0.24, 1)));
+  }
+  .fn-mark__copy {
+    position: absolute; z-index: 2;
+    left: clamp(2rem, 8vw, 8rem);
+    top: clamp(2rem, 8vh, 6rem);
+    color: var(--sc-ink);
+  }
+  .fn-mark__eyebrow {
+    font-family: var(--sc-font-text);
+    font-size: var(--sc-t-xs);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sc-ink-soft);
+    margin: 0 0 0.75rem 0;
+  }
+  .fn-mark__head {
+    font-family: var(--sc-font-display);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 1.4rem + 4vw, 4.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.022em;
+    max-width: 12ch;
+    margin: 0;
+  }
+  .fn-mark__foot {
+    position: absolute; z-index: 2;
+    right: clamp(2rem, 8vw, 8rem);
+    bottom: clamp(2rem, 8vh, 6rem);
+    text-align: right;
+    max-width: 22rem;
+  }
+  .fn-mark__foot p {
+    font-family: var(--sc-font-text);
+    font-size: var(--sc-t-base);
+    line-height: 1.5;
+    color: var(--sc-ink-soft);
+    margin: 0;
+  }
+
+  /* -------- 4 · WEIGHT — stanza wipes in -------- */
+  .fn-weight {
+    padding-block: var(--sc-section);
+    padding-inline: var(--sc-gutter);
+    display: grid; grid-template-columns: 1fr;
+  }
+  .fn-weight__inner {
+    max-width: 62rem;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .fn-weight__label {
+    font-family: var(--sc-font-text);
+    font-size: var(--sc-t-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sc-ink-soft);
+    margin: 0 0 1.5rem 0;
+  }
+  .fn-weight__line {
+    font-family: var(--sc-font-display);
+    font-weight: 400;
+    font-size: clamp(2.2rem, 1.5rem + 3.4vw, 4rem);
+    line-height: 1.14;
+    letter-spacing: -0.022em;
+    color: var(--sc-ink);
+    margin: 0;
+    /* Line-height under 1 would clip glyphs during a clip-path wipe;
+       give the ascenders room. */
+    padding-bottom: 0.06em;
+  }
+  .fn-weight__line--soft { color: var(--sc-ink-soft); }
+  .fn-weight__line--ink { color: var(--sc-accent); }
+
+  /* -------- 5 · CHOICE — three formats, three scales -------- */
+  .fn-choice {
+    position: relative;
+    padding-inline: var(--sc-gutter);
+    display: grid; grid-template-columns: 1fr;
+    align-content: center;
+    height: 100%;
+  }
+  .fn-choice__inner {
+    max-width: var(--sc-maxw);
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: clamp(2rem, 5vh, 4rem);
+  }
+  .fn-choice__label {
+    font-family: var(--sc-font-text);
+    font-size: var(--sc-t-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sc-ink-soft);
+    margin: 0;
+  }
+  .fn-choice__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    column-gap: clamp(1rem, 3vw, 3rem);
+    padding-block: clamp(1rem, 2vh, 2rem);
+    border-top: 1px solid var(--sc-hairline);
+  }
+  .fn-choice__row:last-child { border-bottom: 1px solid var(--sc-hairline); }
+  .fn-choice__name {
+    font-family: var(--sc-font-display);
+    font-weight: 400;
+    color: var(--sc-ink);
+    line-height: 1;
+    letter-spacing: -0.028em;
+    margin: 0;
+  }
+  .fn-choice__name--sm { font-size: clamp(2.4rem, 1.4rem + 4vw, 4.6rem); }
+  .fn-choice__name--md { font-size: clamp(3rem, 1.6rem + 6vw, 6.2rem); }
+  .fn-choice__name--lg { font-size: clamp(3.8rem, 2rem + 8vw, 8rem); }
+  .fn-choice__spec {
+    font-family: var(--sc-font-text);
+    font-size: var(--sc-t-sm);
+    color: var(--sc-ink-soft);
+    letter-spacing: 0.02em;
+    justify-self: end;
+    text-align: right;
+    max-width: 22ch;
+  }
+
+  /* -------- 6 · RESOLVE — smallest type, plain underline -------- */
+  .fn-resolve {
+    padding-block: calc(var(--sc-section) * 0.7);
+    padding-inline: var(--sc-gutter);
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .fn-resolve__inner {
+    max-width: 48rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .fn-resolve p {
+    font-family: var(--sc-font-text);
+    font-size: var(--sc-t-sm);
+    color: var(--sc-ink-soft);
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    letter-spacing: 0.02em;
+  }
+  .fn-resolve a {
+    color: var(--sc-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.28em;
+    text-decoration-thickness: 1px;
+  }
+  .fn-resolve a:hover { text-decoration-thickness: 2px; }
+
+  .fn-colophon {
+    padding: 1.5rem var(--sc-gutter) 3rem;
+    font-family: var(--sc-font-text);
+    font-size: var(--sc-t-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sc-ink-soft);
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+
+  /* Kinetic line masks reserve room for descenders. Poster type is set tight,
+     so this matters more here than usual. */
+  .sc-split--line { padding-bottom: 0.18em; margin-bottom: -0.18em; }
+</style>
+</head>
+<body>
+
+<span data-sc-progress></span>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<header class="fn-folio" role="banner">
+  <span class="fn-folio__mark">Fieldnote</span>
+  <span class="fn-folio__place">A pocket notebook · N° 001</span>
+</header>
+
+<main id="top">
+
+  <!-- 1 · STILLNESS — one word, huge, alone. Pinned so the word arrives, holds,
+       and the eye has time to notice the dot IS the accent, not decoration. -->
+  <section data-sc-act="pin" data-sc-span="2.2" data-sc-drift="#F1EBDD">
+    <div data-sc-stage class="fn-stage--still">
+      <div class="fn-still-row">
+        <h1 class="fn-still" data-sc-cue="0 1 0 0.28" data-sc-kinetic="chars">Blank</h1>
+        <span class="fn-still__dot" data-sc-cue="0.42 1 0 0.28" aria-hidden="true">.</span>
+      </div>
+      <p class="fn-still__meta" data-sc-cue="0.32 1 0.24 0.28">96 pages, unopened</p>
+    </div>
+  </section>
+
+  <!-- 2 · RESTRAINT — a small paragraph, quiet, tucked into a corner. Not a
+       headline. Flow, staggered entrance. -->
+  <section class="fn-restraint">
+    <div class="fn-restraint__inner" data-sc-in data-sc-stagger="80">
+      <p class="fn-restraint__label">§ 01 · The unwritten one</p>
+      <p>The thought you had walking to the station last Tuesday. The one that felt clear until the platform. That one.</p>
+    </div>
+  </section>
+
+  <!-- 3 · MARKING · PEAK. The signature move. Largest span on the page.
+       A real SVG stroke draws across the viewport driven by --sc-p. A nib
+       glyph rides the endpoint. Pin so the paper holds while the ink runs. -->
+  <section id="mark" data-sc-act="pin" data-sc-span="3.8" data-sc-drift="#EFE6D2">
+    <div data-sc-stage>
+      <div class="fn-mark">
+        <div class="fn-mark__paper" aria-hidden="true"></div>
+
+        <svg class="fn-mark__svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <!-- The ink line: stroke reveal driven from --sc-p (see CSS) -->
+          <path id="fn-ink" class="fn-mark__line" pathLength="1000"
+                d="M 60 320 C 220 260, 380 380, 560 300 S 820 220, 940 300" />
+
+          <!-- Flourish: a small underline swoop that draws in the last ~25% -->
+          <path class="fn-mark__flourish" pathLength="1000"
+                d="M 720 360 C 780 400, 860 400, 920 360" />
+
+          <!-- Nib glyph. Rides the endpoint via a CSS motion-path sync'd to p. -->
+          <g class="fn-mark__nib">
+            <polygon points="-14,-6 14,0 -14,6 -8,0" />
+          </g>
+        </svg>
+
+        <div class="fn-mark__copy" data-sc-cue="0 0.5 0 0.18">
+          <p class="fn-mark__eyebrow">§ 02 · The mark</p>
+          <h2 class="fn-mark__head">One line and you have started.</h2>
+        </div>
+
+        <div class="fn-mark__foot" data-sc-cue="0.6 1 0.18 0.22">
+          <p>Ink is <em>Waterman Serenity Blue</em>, drawn on 90&nbsp;gsm cream, roughly to the length of a signature.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · WEIGHT — a three-line stanza wipes in from below. Flow section,
+       reveal is the device. Held long enough to actually read. -->
+  <section class="fn-weight">
+    <div class="fn-weight__inner">
+      <p class="fn-weight__label" data-sc-in>§ 03 · What it is</p>
+      <p class="fn-weight__line" data-sc-reveal="up" data-sc-reveal-at="0.12 0.55">Ninety-six sewn pages,</p>
+      <p class="fn-weight__line fn-weight__line--soft" data-sc-reveal="up" data-sc-reveal-at="0.24 0.62">bound in a card cover you will bend without regret,</p>
+      <p class="fn-weight__line fn-weight__line--ink" data-sc-reveal="up" data-sc-reveal-at="0.38 0.72">and a paper the pen catches instead of skating on.</p>
+    </div>
+  </section>
+
+  <!-- 5 · CHOICE — three format names at three scales. The choice reads as
+       three words, not three cards. Kinetic lines assemble as the pin holds. -->
+  <section data-sc-act="pin" data-sc-span="2.4" data-sc-drift="#EAE1CC">
+    <div data-sc-stage>
+      <div class="fn-choice">
+        <div class="fn-choice__inner">
+          <p class="fn-choice__label" data-sc-cue="0 1 0 0.22">§ 04 · Three</p>
+
+          <div class="fn-choice__row">
+            <h3 class="fn-choice__name fn-choice__name--sm" data-sc-cue="0.10 1 0.12 0.22" data-sc-kinetic="lines">Dot.</h3>
+            <p class="fn-choice__spec" data-sc-cue="0.14 1 0.14 0.22">5&nbsp;mm grid, faintest.<br>For plans, sketches, page layouts.</p>
+          </div>
+
+          <div class="fn-choice__row">
+            <h3 class="fn-choice__name fn-choice__name--md" data-sc-cue="0.28 1 0.14 0.22" data-sc-kinetic="lines">Ruled.</h3>
+            <p class="fn-choice__spec" data-sc-cue="0.32 1 0.14 0.22">7&nbsp;mm, warm grey.<br>For running prose and lecture notes.</p>
+          </div>
+
+          <div class="fn-choice__row">
+            <h3 class="fn-choice__name fn-choice__name--lg" data-sc-cue="0.48 1 0.16 0.22" data-sc-kinetic="lines">Plain.</h3>
+            <p class="fn-choice__spec" data-sc-cue="0.52 1 0.16 0.22">Nothing at all.<br>For the drawing you do not know yet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · RESOLVE — the inversion. Smallest type on the page, plain underlined
+       link, no button island. Flow section, quiet on entry. -->
+  <section class="fn-resolve">
+    <div class="fn-resolve__inner" data-sc-in data-sc-stagger="60">
+      <p>Fieldnote is a small run of three notebooks. They ship in cotton wrap, undated, unbranded on the cover.</p>
+      <p>If one of the three fits how you already work, <a href="#top">carry one</a>.</p>
+    </div>
+  </section>
+
+  <footer class="fn-colophon">
+    <span>Fieldnote · Set in Fraunces and Inter · Printed on 90&nbsp;gsm cream</span>
+    <span>N° 001 · Not for sale</span>
+  </footer>
+
+</main>
+
+<script src="scrollcraft.js"></script>
+<script>
+  ScrollCraft.mount(document.body);
+
+  /* ---- Signature move: drive the nib line off the peak act's --sc-p. ----
+     The engine publishes --sc-p on each act's own element as it scrolls.
+     Read it here on the peak section and mirror it onto the document root as
+     --sc-p so the SVG paths (which use var(--sc-p) in stroke-dashoffset and
+     offset-distance) draw as the reader scrolls. rAF-throttled; never writes
+     if the value has not changed. */
+  (function nibDrive () {
+    const peak = document.getElementById('mark');
+    if (!peak) return;
+    const root = document.documentElement;
+    let last = -1, queued = false;
+
+    function read () {
+      queued = false;
+      const p = parseFloat(getComputedStyle(peak).getPropertyValue('--sc-p')) || 0;
+      if (p === last) return;
+      last = p;
+      root.style.setProperty('--sc-p', p.toFixed(4));
+    }
+    function tick () { if (!queued) { queued = true; requestAnimationFrame(read); } }
+
+    window.addEventListener('scroll', tick, { passive: true });
+    window.addEventListener('resize', tick);
+    tick();
+  })();
+</script>
+</body>
+</html>
